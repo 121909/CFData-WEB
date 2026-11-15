@@ -2761,7 +2761,7 @@
             }
             container.classList.remove('hidden');
             const chips = uploadedFiles.map((f, idx) => {
-                const safeName = escapeHtml(f.name);
+                const safeName = escapeHTML(f.name);
                 return `<span class="nsb-file-chip" title="${safeName}"><span>${safeName}</span><button type="button" title="移除此文件" onclick="removeNSBFile(${idx})">×</button></span>`;
             }).join('');
             container.innerHTML = `${chips}<button type="button" class="nsb-file-action" onclick="triggerAppendNSBFiles()">+ 追加</button><button type="button" class="nsb-file-action" onclick="clearNSBFiles()">清空</button>`;
@@ -3056,10 +3056,10 @@
 
             const renderItem = (iata) => {
                 const checked = selectedSet.has(iata) ? 'checked' : '';
-                const label = escapeHtml(formatNSBDCLabel(iata));
+                const label = escapeHTML(formatNSBDCLabel(iata));
                 const count = fileCountMap.get(iata);
                 const badge = count ? `<span class="nsb-dc-count">${count}条</span>` : '';
-                return `<label class="nsb-dc-option" onclick="event.preventDefault();toggleNSBDC('${escapeHtml(iata)}')"><input type="checkbox" ${checked} tabindex="-1"><span class="nsb-dc-code">${escapeHtml(iata)}</span><span class="nsb-dc-name" title="${label}">${label}</span>${badge}</label>`;
+                return `<label class="nsb-dc-option" onclick="event.preventDefault();toggleNSBDC('${escapeHTML(iata)}')"><input type="checkbox" ${checked} tabindex="-1"><span class="nsb-dc-code">${escapeHTML(iata)}</span><span class="nsb-dc-name" title="${label}">${label}</span>${badge}</label>`;
             };
 
             let html = '';
@@ -3074,7 +3074,7 @@
             if (!html) {
                 const customCode = query.toUpperCase();
                 if (/^[A-Z]{3}$/.test(customCode)) {
-                    html = `<div class="nsb-dc-empty">未在列表中找到 "${escapeHtml(customCode)}"<br><button type="button" class="nsb-file-action" style="margin-top:8px;" onclick="toggleNSBDC('${escapeHtml(customCode)}')">+ 添加自定义 ${escapeHtml(customCode)}</button></div>`;
+                    html = `<div class="nsb-dc-empty">未在列表中找到 "${escapeHTML(customCode)}"<br><button type="button" class="nsb-file-action" style="margin-top:8px;" onclick="toggleNSBDC('${escapeHTML(customCode)}')">+ 添加自定义 ${escapeHTML(customCode)}</button></div>`;
                 } else {
                     html = `<div class="nsb-dc-empty">${allLocations.length ? '无匹配的数据中心' : '暂无 locations.json 数据，可直接在输入框填写三字码（如 HKG,NRT）'}</div>`;
                 }
