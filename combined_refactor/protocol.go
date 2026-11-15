@@ -43,10 +43,16 @@ type startOfficialSpeedBatchRequest struct {
 	SkipTested bool         `json:"skipTested"`
 }
 
+type nsbUploadedFile struct {
+	Name    string `json:"name"`
+	Content string `json:"content"`
+}
+
 type startNSBTaskRequest struct {
-	FileName     string  `json:"fileName"`
-	FileContent  string  `json:"fileContent"`
-	SourceURL    string  `json:"sourceURL"`
+	FileName     string            `json:"fileName"`
+	FileContent  string            `json:"fileContent"`
+	Files        []nsbUploadedFile `json:"files,omitempty"`
+	SourceURL    string            `json:"sourceURL"`
 	OutFile      string  `json:"outFile"`
 	MaxThreads   int     `json:"maxThreads"`
 	FallbackPort int     `json:"fallbackPort"`

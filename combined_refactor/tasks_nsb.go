@@ -204,7 +204,7 @@ func scanNSBEntryHTTP(ctx context.Context, item string, fallbackPort int, enable
 	if dataCenter == "" {
 		return nil, &nsbFailureRecord{index: inputIndex, ipAddr: ipAddr, port: portStr, phase: "scan", reason: "Trace校验失败", detail: "trace 中未返回 colo 字段"}
 	}
-	if strings.TrimSpace(targetDC) != "" && !strings.EqualFold(dataCenter, strings.TrimSpace(targetDC)) {
+	if !matchesTargetDC(dataCenter, targetDC) {
 		return nil, &nsbFailureRecord{index: inputIndex, ipAddr: ipAddr, port: portStr, phase: "scan", reason: "数据中心不匹配", detail: fmt.Sprintf("colo=%s, target=%s", dataCenter, targetDC)}
 	}
 
@@ -360,7 +360,7 @@ func scanNSBEntry(ctx context.Context, item string, fallbackPort int, enableTLS 
 	if dataCenter == "" {
 		return nil, &nsbFailureRecord{index: inputIndex, ipAddr: ipAddr, port: portStr, phase: "scan", reason: "Trace校验失败", detail: "trace 中未返回 colo 字段"}
 	}
-	if strings.TrimSpace(targetDC) != "" && !strings.EqualFold(dataCenter, strings.TrimSpace(targetDC)) {
+	if !matchesTargetDC(dataCenter, targetDC) {
 		return nil, &nsbFailureRecord{index: inputIndex, ipAddr: ipAddr, port: portStr, phase: "scan", reason: "数据中心不匹配", detail: fmt.Sprintf("colo=%s, target=%s", dataCenter, targetDC)}
 	}
 
@@ -644,35 +644,17 @@ done:
 }
 
 func runNSBTask(ctx context.Context, session *appSession, fileName, fileContent, outFile string, maxThreads, fallbackPort, speedTest int, speedURL string, enableTLS bool, delay int, resultLimit int, targetDC string, speedMin float64, speedLimit int, compact bool, scanMode string, reallinkHost string) {
+	runNSBTaskWithFiles(ctx, session, fileName, []nsbUploadedFile{{Name: fileName, Content: fileContent}}, outFile, maxThreads, fallbackPort, speedTest, speedURL, enableTLS, delay, resultLimit, targetDC, speedMin, speedLimit, compact, scanMode, reallinkHost)
+}
+
+func runNSBTaskWithFiles(ctx context.Context, session *appSession, fileName string, files []nsbUploadedFile, outFile string, maxThreads, fallbackPort, speedTest int, speedURL string, enableTLS bool, delay int, resultLimit int, targetDC string, speedMin float64, speedLimit int, compact bool, scanMode string, reallinkHost string) {
 	session.sendWSMessage("log", fmt.Sprintf("开始非标优选：%s", fileName))
-
-	tmpFile, err := os.CreateTemp(".", "cfdata-nsb-*.txt")
-	if err != nil {
-		session.sendWSMessage("error", "无法创建临时文件: "+err.Error())
-		return
-	}
-	tmpPath := tmpFile.Name()
-	defer os.Remove(tmpPath)
-
-	if _, err := io.WriteString(tmpFile, fileContent); err != nil {
-		tmpFile.Close()
-		session.sendWSMessage("error", "写入临时文件失败: "+err.Error())
-		return
-	}
-	if err := tmpFile.Close(); err != nil {
-		session.sendWSMessage("error", "关闭临时文件失败: "+err.Error())
-		return
-	}
 
 	if fallbackPort <= 0 {
 		session.sendWSMessage("error", "备用端口必须为 1-65535")
 		return
 	}
-	ips, err := readIPsWithFallbackPort(tmpPath, fallbackPort)
-	if err != nil {
-		session.sendWSMessage("error", "解析上传文件失败: "+err.Error())
-		return
-	}
+	ips := parseNSBFilesInputs(files, fallbackPort)
 	if len(ips) == 0 {
 		session.sendWSMessage("error", "上传文件中未找到有效的 ip 端口行")
 		return

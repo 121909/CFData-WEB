@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"os"
 	"strconv"
@@ -292,11 +293,21 @@ func main() {
 	}
 	fmt.Printf("服务启动于 %s\n", displayURL)
 	fmt.Printf("服务启动成功，复制 %s 到浏览器打开\n", displayURL)
+	ln, err := net.Listen("tcp", addr)
+	if err != nil {
+		fmt.Printf("启动失败: %v\n", err)
+		return
+	}
+	browserHost := displayHost
+	if browserHost == "0.0.0.0" || browserHost == "::" || browserHost == "[::]" {
+		browserHost = "localhost"
+	}
+	openBrowserOnWindows(fmt.Sprintf("http://%s:%d", browserHost, listenPort))
 	server := &http.Server{
 		Addr:              addr,
 		ReadHeaderTimeout: 10 * time.Second,
 	}
-	if err := server.ListenAndServe(); err != nil {
+	if err := server.Serve(ln); err != nil {
 		fmt.Printf("启动失败: %v\n", err)
 	}
 }

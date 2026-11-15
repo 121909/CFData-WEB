@@ -419,6 +419,208 @@
             color: var(--primary-color);
         }
 
+        .nsb-file-list {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .nsb-file-list.hidden {
+            display: none;
+        }
+
+        .nsb-file-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-main);
+            font-size: 12px;
+            max-width: 240px;
+        }
+
+        .nsb-file-chip span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .nsb-file-chip button,
+        .nsb-file-action {
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0 2px;
+            font-size: 13px;
+            line-height: 1;
+        }
+
+        .nsb-file-chip button:hover,
+        .nsb-file-action:hover {
+            color: var(--error-color);
+        }
+
+        .nsb-file-action {
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 12px;
+            background: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        .nsb-file-action:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .nsb-dc-picker {
+            position: relative;
+            width: 100%;
+        }
+
+        .nsb-dc-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            min-width: 270px;
+            max-height: 340px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.16);
+            z-index: 80;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .nsb-dc-dropdown.hidden {
+            display: none;
+        }
+
+        .nsb-dc-dropdown-header {
+            padding: 8px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            background: var(--card-bg);
+        }
+
+        .nsb-dc-search {
+            width: 100%;
+            min-height: 34px !important;
+            padding: 6px 10px !important;
+            font-size: 13px !important;
+        }
+
+        .nsb-dc-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .nsb-dc-actions-btns {
+            display: flex;
+            gap: 6px;
+        }
+
+        .nsb-dc-actions-btns button {
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-main);
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .nsb-dc-actions-btns button:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .nsb-dc-list {
+            overflow-y: auto;
+            max-height: 240px;
+            padding: 6px;
+        }
+
+        .nsb-dc-group-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            padding: 6px 8px 4px;
+            text-transform: uppercase;
+        }
+
+        .nsb-dc-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--text-main);
+            user-select: none;
+        }
+
+        .nsb-dc-option:hover {
+            background: var(--bg-color);
+        }
+
+        .nsb-dc-option input[type="checkbox"] {
+            width: 15px;
+            height: 15px;
+            min-height: 15px !important;
+            margin: 0;
+            padding: 0;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .nsb-dc-code {
+            font-weight: 700;
+            min-width: 38px;
+        }
+
+        .nsb-dc-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .nsb-dc-count {
+            font-size: 11px;
+            padding: 1px 6px;
+            border-radius: 999px;
+            background: rgba(59, 130, 246, 0.12);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nsb-dc-empty {
+            padding: 14px 10px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
         .speed-url-select {
             width: min(170px, 100%);
             max-width: 170px;
@@ -1796,9 +1998,10 @@
                         URL（二选一）；若识别失败，请整理为每行一个目标，格式：IP 空格 端口，例如 1.2.3.4 443</span>
                 </div>
                 <div class="option-item full-width">
-                    <span class="label" title="支持 txt/csv 格式">📄 IP 文件</span>
-                    <input id="nsbFileInput" type="file" accept=".txt,.csv,text/plain,text/csv"
+                    <span class="label" title="支持同时选择多个 txt/csv 文件并自动合并内容">📄 IP 文件</span>
+                    <input id="nsbFileInput" type="file" accept=".txt,.csv,text/plain,text/csv" multiple
                         onchange="syncNSBInputMode('file')">
+                    <div id="nsbFileList" class="nsb-file-list hidden"></div>
                 </div>
                 <div class="option-item full-width">
                     <span class="label" title="从网络地址获取 IP 列表">🌐 网络 URL</span>
@@ -1841,8 +2044,26 @@
                     <input id="nsbSpeedTest" type="number" value="0" placeholder="0 关闭测速">
                 </div>
                 <div class="option-item">
-                    <span class="label" title="按数据中心筛选结果">🏢 数据中心</span>
-                    <input id="nsbTargetDC" type="text" value="" placeholder="留空不限制，如 NRT">
+                    <span class="label" title="按数据中心筛选结果（支持多选，逗号分隔）">🏢 数据中心</span>
+                    <div class="nsb-dc-picker" id="nsbDCPicker">
+                        <div class="field-with-action">
+                            <input id="nsbTargetDC" type="text" value="" placeholder="留空不限制，支持多选如 HKG,NRT" oninput="onNSBDCInputChange()">
+                            <button type="button" class="mini-action-btn" title="选择数据中心（可多选）" onclick="toggleNSBDCDropdown(event)">▾</button>
+                        </div>
+                        <div id="nsbDCDropdown" class="nsb-dc-dropdown hidden" onclick="event.stopPropagation()">
+                            <div class="nsb-dc-dropdown-header">
+                                <input id="nsbDCSearch" type="text" class="nsb-dc-search" placeholder="搜索三字码 / 城市 / 地区..." oninput="renderNSBDCOptions()">
+                                <div class="nsb-dc-actions">
+                                    <span id="nsbDCSelectedCount">已选 0 个</span>
+                                    <div class="nsb-dc-actions-btns">
+                                        <button type="button" onclick="selectAllFilteredNSBDC()">全选</button>
+                                        <button type="button" onclick="clearNSBDC()">清空</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="nsbDCList" class="nsb-dc-list"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="option-item">
                     <span class="label" title="表格列数精简或完整">🧾 精简表格</span>
@@ -2422,6 +2643,11 @@
         let currentMode = 'official';
         let uploadedFileName = '';
         let uploadedFileContent = '';
+        let uploadedFiles = [];
+        let nsbFileAppendMode = false;
+        let allLocations = [];
+        let locationByIata = {};
+        let extractedFileDCs = [];
         let nsbHeaders = [];
         let nsbRows = [];
         let nsbLiveRows = [];
@@ -2506,35 +2732,354 @@
         const fileInput = document.getElementById('nsbFileInput');
         const nsbSourceUrlInput = document.getElementById('nsbSourceUrl');
 
-        document.getElementById('nsbFileInput').addEventListener('change', e => {
-            const file = e.target.files[0];
-            if (!file) {
-                uploadedFileName = '';
-                uploadedFileContent = '';
-                syncNSBInputMode();
+        function readFileAsTextAsync(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve({ name: file.name || 'upload.txt', content: String(reader.result || '') });
+                reader.onerror = () => reject(new Error(`读取文件失败: ${file.name || ''}`));
+                reader.readAsText(file);
+            });
+        }
+
+        function syncUploadedFileSummary() {
+            uploadedFileName = uploadedFiles.map(f => f.name).join(', ');
+            uploadedFileContent = uploadedFiles.length === 1 ? uploadedFiles[0].content : '';
+            extractDCsFromFiles(uploadedFiles);
+            renderNSBFileList();
+            if (!document.getElementById('nsbDCDropdown')?.classList.contains('hidden')) {
+                renderNSBDCOptions();
+            }
+        }
+
+        function renderNSBFileList() {
+            const container = document.getElementById('nsbFileList');
+            if (!container) return;
+            if (!uploadedFiles.length) {
+                container.innerHTML = '';
+                container.classList.add('hidden');
                 return;
             }
-            uploadedFileName = file.name || 'upload.txt';
-            const reader = new FileReader();
-            reader.onload = () => {
-                uploadedFileContent = String(reader.result || '');
+            container.classList.remove('hidden');
+            const chips = uploadedFiles.map((f, idx) => {
+                const safeName = escapeHtml(f.name);
+                return `<span class="nsb-file-chip" title="${safeName}"><span>${safeName}</span><button type="button" title="移除此文件" onclick="removeNSBFile(${idx})">×</button></span>`;
+            }).join('');
+            container.innerHTML = `${chips}<button type="button" class="nsb-file-action" onclick="triggerAppendNSBFiles()">+ 追加</button><button type="button" class="nsb-file-action" onclick="clearNSBFiles()">清空</button>`;
+        }
+
+        function triggerAppendNSBFiles() {
+            if (!fileInput) return;
+            nsbFileAppendMode = true;
+            fileInput.value = '';
+            fileInput.click();
+        }
+
+        function removeNSBFile(index) {
+            if (index < 0 || index >= uploadedFiles.length) return;
+            uploadedFiles.splice(index, 1);
+            if (!uploadedFiles.length && fileInput) {
+                fileInput.value = '';
+            }
+            syncUploadedFileSummary();
+            syncNSBInputMode();
+        }
+
+        function clearNSBFiles() {
+            uploadedFiles = [];
+            if (fileInput) fileInput.value = '';
+            syncUploadedFileSummary();
+            syncNSBInputMode();
+        }
+
+        document.getElementById('nsbFileInput').addEventListener('change', async e => {
+            const selected = Array.from(e.target.files || []);
+            const append = nsbFileAppendMode;
+            nsbFileAppendMode = false;
+            if (!selected.length) {
+                if (!append) {
+                    uploadedFiles = [];
+                    syncUploadedFileSummary();
+                    syncNSBInputMode();
+                }
+                return;
+            }
+            try {
+                const loaded = await Promise.all(selected.map(readFileAsTextAsync));
+                if (append) {
+                    const existing = new Set(uploadedFiles.map(f => `${f.name}\0${f.content}`));
+                    loaded.forEach(item => {
+                        const key = `${item.name}\0${item.content}`;
+                        if (!existing.has(key)) {
+                            existing.add(key);
+                            uploadedFiles.push(item);
+                        }
+                    });
+                } else {
+                    uploadedFiles = loaded;
+                }
+                syncUploadedFileSummary();
                 syncNSBInputMode('file');
-                log(`已选择文件: ${uploadedFileName}`);
-            };
-            reader.onerror = () => log('读取文件失败');
-            reader.readAsText(file);
+                log(`已选择 ${uploadedFiles.length} 个文件: ${uploadedFileName}`);
+            } catch (err) {
+                log(err && err.message ? err.message : '读取文件失败');
+            }
         });
 
         function syncNSBInputMode(preferred) {
-            const hasFile = !!(fileInput && fileInput.files && fileInput.files.length);
+            const hasFile = uploadedFiles.length > 0 || !!(fileInput && fileInput.files && fileInput.files.length);
             const hasURL = !!(nsbSourceUrlInput && nsbSourceUrlInput.value.trim());
             if (preferred === 'file' && hasFile && nsbSourceUrlInput) {
                 nsbSourceUrlInput.value = '';
             } else if (preferred === 'url' && hasURL && fileInput) {
                 fileInput.value = '';
-                uploadedFileName = '';
-                uploadedFileContent = '';
+                uploadedFiles = [];
+                syncUploadedFileSummary();
             }
+        }
+
+        function parseCSVLineSimple(line) {
+            const out = [];
+            let cur = '';
+            let inQuotes = false;
+            for (let i = 0; i < line.length; i++) {
+                const ch = line[i];
+                if (ch === '"') {
+                    if (inQuotes && line[i + 1] === '"') {
+                        cur += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (ch === ',' && !inQuotes) {
+                    out.push(cur.trim());
+                    cur = '';
+                } else {
+                    cur += ch;
+                }
+            }
+            out.push(cur.trim());
+            return out;
+        }
+
+        function extractDCsFromFiles(files) {
+            const counts = new Map();
+            const addCode = (code) => {
+                const upper = String(code || '').trim().toUpperCase();
+                if (!/^[A-Z]{3}$/.test(upper)) return;
+                counts.set(upper, (counts.get(upper) || 0) + 1);
+            };
+            const hasKnownLocations = Object.keys(locationByIata).length > 0;
+            const dcHeaderNames = new Set(['dc', 'colo', 'iata', 'datacenter', 'data_center', '数据中心', '节点', '机场三字码']);
+
+            (files || []).forEach(file => {
+                const text = String(file && file.content || '');
+                if (!text.trim()) return;
+                const lines = text.split(/\r?\n/);
+                let csvDCCol = -1;
+                let checkedHeader = false;
+
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+                    if (!checkedHeader && line.includes(',')) {
+                        checkedHeader = true;
+                        const cols = parseCSVLineSimple(line.replace(/^\uFEFF/, ''));
+                        for (let c = 0; c < cols.length; c++) {
+                            const norm = cols[c].trim().toLowerCase().replace(/[\s_-]+/g, '');
+                            if (dcHeaderNames.has(norm) || dcHeaderNames.has(cols[c].trim().toLowerCase())) {
+                                csvDCCol = c;
+                                break;
+                            }
+                        }
+                        if (csvDCCol >= 0) continue;
+                    }
+                    if (csvDCCol >= 0 && line.includes(',')) {
+                        const cols = parseCSVLineSimple(line);
+                        if (csvDCCol < cols.length) {
+                            const val = cols[csvDCCol].trim().toUpperCase();
+                            if (/^[A-Z]{3}$/.test(val)) {
+                                addCode(val);
+                                continue;
+                            }
+                        }
+                    }
+                    if (hasKnownLocations) {
+                        const matches = line.match(/\b[A-Za-z]{3}\b/g);
+                        if (matches) {
+                            const seenLine = new Set();
+                            for (const m of matches) {
+                                const upper = m.toUpperCase();
+                                if (!seenLine.has(upper) && locationByIata[upper]) {
+                                    seenLine.add(upper);
+                                    addCode(upper);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            extractedFileDCs = Array.from(counts.entries())
+                .map(([iata, count]) => ({ iata, count }))
+                .sort((a, b) => (b.count - a.count) || a.iata.localeCompare(b.iata));
+        }
+
+        function getSelectedNSBDCList() {
+            const raw = document.getElementById('nsbTargetDC')?.value || '';
+            const parts = raw.split(/[,，;\s]+/).map(s => s.trim().toUpperCase()).filter(Boolean);
+            const seen = new Set();
+            const out = [];
+            parts.forEach(p => {
+                if (!seen.has(p)) {
+                    seen.add(p);
+                    out.push(p);
+                }
+            });
+            return out;
+        }
+
+        function setSelectedNSBDCList(list) {
+            const input = document.getElementById('nsbTargetDC');
+            if (!input) return;
+            const seen = new Set();
+            const clean = [];
+            (list || []).forEach(item => {
+                const upper = String(item || '').trim().toUpperCase();
+                if (upper && !seen.has(upper)) {
+                    seen.add(upper);
+                    clean.push(upper);
+                }
+            });
+            input.value = clean.join(',');
+            updateNSBDCSelectedCount();
+        }
+
+        function updateNSBDCSelectedCount() {
+            const el = document.getElementById('nsbDCSelectedCount');
+            if (!el) return;
+            el.textContent = `已选 ${getSelectedNSBDCList().length} 个`;
+        }
+
+        function onNSBDCInputChange() {
+            updateNSBDCSelectedCount();
+            if (!document.getElementById('nsbDCDropdown')?.classList.contains('hidden')) {
+                renderNSBDCOptions();
+            }
+        }
+
+        function toggleNSBDCDropdown(event) {
+            if (event) event.stopPropagation();
+            const dropdown = document.getElementById('nsbDCDropdown');
+            if (!dropdown) return;
+            const opening = dropdown.classList.contains('hidden');
+            dropdown.classList.toggle('hidden');
+            if (opening) {
+                if (!allLocations.length) {
+                    wsSend({ type: 'get_locations' });
+                }
+                renderNSBDCOptions();
+                const searchInput = document.getElementById('nsbDCSearch');
+                if (searchInput) setTimeout(() => searchInput.focus(), 0);
+            }
+        }
+
+        function toggleNSBDC(iata) {
+            const code = String(iata || '').trim().toUpperCase();
+            if (!code) return;
+            const list = getSelectedNSBDCList();
+            const idx = list.indexOf(code);
+            if (idx >= 0) {
+                list.splice(idx, 1);
+            } else {
+                list.push(code);
+            }
+            setSelectedNSBDCList(list);
+            renderNSBDCOptions();
+        }
+
+        function clearNSBDC() {
+            setSelectedNSBDCList([]);
+            renderNSBDCOptions();
+        }
+
+        function getFilteredNSBDCCodes() {
+            const query = (document.getElementById('nsbDCSearch')?.value || '').trim().toLowerCase();
+            const matchLoc = (iata) => {
+                if (!query) return true;
+                const loc = locationByIata[iata] || {};
+                const hay = [
+                    iata,
+                    loc.city_zh || '',
+                    loc.city || '',
+                    loc.region_zh || '',
+                    loc.region || '',
+                    loc.country || '',
+                    loc.cca2 || '',
+                ].join(' ').toLowerCase();
+                return hay.includes(query);
+            };
+            const fileCodes = extractedFileDCs.map(d => d.iata).filter(matchLoc);
+            const fileSet = new Set(fileCodes);
+            const otherCodes = allLocations.map(l => String(l.iata || '').toUpperCase()).filter(c => c && !fileSet.has(c) && matchLoc(c));
+            return { fileCodes, otherCodes, query };
+        }
+
+        function selectAllFilteredNSBDC() {
+            const { fileCodes, otherCodes } = getFilteredNSBDCCodes();
+            const merged = new Set(getSelectedNSBDCList());
+            if (fileCodes.length > 0 && !(document.getElementById('nsbDCSearch')?.value || '').trim()) {
+                fileCodes.forEach(c => merged.add(c));
+            } else {
+                fileCodes.forEach(c => merged.add(c));
+                otherCodes.forEach(c => merged.add(c));
+            }
+            setSelectedNSBDCList(Array.from(merged));
+            renderNSBDCOptions();
+        }
+
+        function formatNSBDCLabel(iata) {
+            const loc = locationByIata[iata];
+            if (!loc) return '自定义 / 未收录';
+            const city = loc.city_zh || loc.city || '';
+            const region = loc.region_zh || loc.region || '';
+            const emoji = loc.emoji ? `${loc.emoji} ` : '';
+            return `${emoji}${[city, region].filter(Boolean).join(' · ')}`.trim();
+        }
+
+        function renderNSBDCOptions() {
+            const listEl = document.getElementById('nsbDCList');
+            if (!listEl) return;
+            updateNSBDCSelectedCount();
+            const selectedSet = new Set(getSelectedNSBDCList());
+            const fileCountMap = new Map(extractedFileDCs.map(d => [d.iata, d.count]));
+            const { fileCodes, otherCodes, query } = getFilteredNSBDCCodes();
+
+            const renderItem = (iata) => {
+                const checked = selectedSet.has(iata) ? 'checked' : '';
+                const label = escapeHtml(formatNSBDCLabel(iata));
+                const count = fileCountMap.get(iata);
+                const badge = count ? `<span class="nsb-dc-count">${count}条</span>` : '';
+                return `<label class="nsb-dc-option" onclick="event.preventDefault();toggleNSBDC('${escapeHtml(iata)}')"><input type="checkbox" ${checked} tabindex="-1"><span class="nsb-dc-code">${escapeHtml(iata)}</span><span class="nsb-dc-name" title="${label}">${label}</span>${badge}</label>`;
+            };
+
+            let html = '';
+            if (fileCodes.length > 0) {
+                html += `<div class="nsb-dc-group-title">📄 上传文件中的节点 (${fileCodes.length})</div>`;
+                html += fileCodes.map(renderItem).join('');
+            }
+            if (otherCodes.length > 0) {
+                html += `<div class="nsb-dc-group-title">🌐 全部数据中心 (${otherCodes.length})</div>`;
+                html += otherCodes.map(renderItem).join('');
+            }
+            if (!html) {
+                const customCode = query.toUpperCase();
+                if (/^[A-Z]{3}$/.test(customCode)) {
+                    html = `<div class="nsb-dc-empty">未在列表中找到 "${escapeHtml(customCode)}"<br><button type="button" class="nsb-file-action" style="margin-top:8px;" onclick="toggleNSBDC('${escapeHtml(customCode)}')">+ 添加自定义 ${escapeHtml(customCode)}</button></div>`;
+                } else {
+                    html = `<div class="nsb-dc-empty">${allLocations.length ? '无匹配的数据中心' : '暂无 locations.json 数据，可直接在输入框填写三字码（如 HKG,NRT）'}</div>`;
+                }
+            }
+            listEl.innerHTML = html;
         }
 
         function applyTheme(theme) {
@@ -2610,6 +3155,11 @@
                 if (!configMenu.contains(event.target) && !configBtn.contains(event.target)) {
                     configMenu.classList.add('hidden');
                 }
+            }
+            const dcPicker = document.getElementById('nsbDCPicker');
+            const dcDropdown = document.getElementById('nsbDCDropdown');
+            if (dcPicker && dcDropdown && !dcPicker.contains(event.target)) {
+                dcDropdown.classList.add('hidden');
             }
         });
 
@@ -3113,6 +3663,7 @@
                 updateStatus('已连接服务器', true);
                 log('已连接服务器');
                 initThemeFromStorage();
+                wsSend({ type: 'get_locations' });
             };
             ws.onmessage = (event) => {
                 try {
@@ -4952,7 +5503,8 @@
         function startNSBTask() {
             syncNSBInputMode();
             const sourceURL = nsbSourceUrlInput ? nsbSourceUrlInput.value.trim() : '';
-            const hasFile = !!uploadedFileContent.trim();
+            const hasMultiFiles = uploadedFiles.some(f => String(f && f.content || '').trim() !== '');
+            const hasFile = hasMultiFiles || !!uploadedFileContent.trim();
             const hasURL = !!sourceURL;
             if (hasFile === hasURL) {
                 showNoticeCard('请选择本地文件或填写网络 URL（二选一）');
@@ -5028,7 +5580,8 @@
                 type: 'start_nsb_task',
                 data: {
                     fileName: uploadedFileName,
-                    fileContent: hasFile ? uploadedFileContent : '',
+                    fileContent: hasFile && !hasMultiFiles ? uploadedFileContent : '',
+                    files: hasFile && hasMultiFiles ? uploadedFiles : [],
                     sourceURL: hasURL ? sourceURL : '',
                     outFile,
                     maxThreads,
@@ -6320,6 +6873,20 @@
                 case 'config_data':
                     applyConfigValues(mapCLIConfigToForm(msg.data));
                     log('配置文件已从服务器加载');
+                    break;
+                case 'locations':
+                    allLocations = Array.isArray(msg.data) ? msg.data : [];
+                    locationByIata = {};
+                    allLocations.forEach(loc => {
+                        const code = String(loc && loc.iata || '').trim().toUpperCase();
+                        if (code) locationByIata[code] = loc;
+                    });
+                    if (uploadedFiles.length) {
+                        extractDCsFromFiles(uploadedFiles);
+                    }
+                    if (!document.getElementById('nsbDCDropdown')?.classList.contains('hidden')) {
+                        renderNSBDCOptions();
+                    }
                     break;
                 case 'scan_progress':
                     if (isStoppingTask) break;

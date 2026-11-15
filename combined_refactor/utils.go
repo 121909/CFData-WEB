@@ -119,6 +119,66 @@ func parseNSBInputs(content string, fallbackPort int) []string {
 	return items
 }
 
+func hasNonEmptyNSBFiles(files []nsbUploadedFile) bool {
+	for _, f := range files {
+		if strings.TrimSpace(f.Content) != "" {
+			return true
+		}
+	}
+	return false
+}
+
+func parseNSBFilesInputs(files []nsbUploadedFile, fallbackPort int) []string {
+	var merged []string
+	seen := make(map[string]bool)
+	for _, f := range files {
+		if strings.TrimSpace(f.Content) == "" {
+			continue
+		}
+		for _, item := range parseNSBInputs(f.Content, fallbackPort) {
+			if seen[item] {
+				continue
+			}
+			seen[item] = true
+			merged = append(merged, item)
+		}
+	}
+	return merged
+}
+
+func parseTargetDCSet(targetDC string) map[string]struct{} {
+	trimmed := strings.TrimSpace(targetDC)
+	if trimmed == "" {
+		return nil
+	}
+	parts := strings.FieldsFunc(trimmed, func(r rune) bool {
+		return r == ',' || r == '，' || r == ';' || r == '；' || r == ' ' || r == '\t' || r == '\n' || r == '\r'
+	})
+	if len(parts) == 0 {
+		return nil
+	}
+	set := make(map[string]struct{}, len(parts))
+	for _, p := range parts {
+		code := strings.ToUpper(strings.TrimSpace(p))
+		if code != "" {
+			set[code] = struct{}{}
+		}
+	}
+	if len(set) == 0 {
+		return nil
+	}
+	return set
+}
+
+func matchesTargetDC(dataCenter, targetDC string) bool {
+	set := parseTargetDCSet(targetDC)
+	if len(set) == 0 {
+		return true
+	}
+	_, ok := set[strings.ToUpper(strings.TrimSpace(dataCenter))]
+	return ok
+}
+
 func parseNSBCSVDocument(content string, fallbackPort int) []nsbEndpoint {
 	reader := csv.NewReader(strings.NewReader(content))
 	reader.TrimLeadingSpace = true

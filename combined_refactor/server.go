@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"os"
 	"runtime/debug"
+	"sort"
 	"strings"
 	"time"
 
@@ -260,7 +261,8 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 			if strings.TrimSpace(params.OutFile) == "" {
 				params.OutFile = "ip.csv"
 			}
-			hasFileContent := strings.TrimSpace(params.FileContent) != ""
+			hasFiles := hasNonEmptyNSBFiles(params.Files)
+			hasFileContent := strings.TrimSpace(params.FileContent) != "" || hasFiles
 			hasSourceURL := strings.TrimSpace(params.SourceURL) != ""
 			if hasFileContent == hasSourceURL {
 				session.sendWSMessage("error", "请选择本地文件或网络URL（二选一）")
@@ -279,7 +281,7 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 			}
 			session.startTaskNamed("非标优选", "nsb", map[string]interface{}{"fileName": params.FileName, "sourceURL": params.SourceURL, "outFile": params.OutFile, "maxThreads": params.MaxThreads, "fallbackPort": params.FallbackPort, "speedTest": params.SpeedTest, "speedURL": params.SpeedURL, "enableTLS": params.EnableTLS, "delay": params.Delay, "resultLimit": params.ResultLimit, "dc": params.DC, "speedMin": params.SpeedMin, "speedLimit": params.SpeedLimit, "compact": params.Compact, "scanMode": scanMode}, func(ctx context.Context, session *appSession) {
 				fileName := params.FileName
-				fileContent := params.FileContent
+				files := params.Files
 				if hasSourceURL {
 					session.sendWSMessage("log", "正在获取非标网络输入: "+params.SourceURL)
 					content, err := getURLContentViaProxy(ctx, params.SourceURL)
@@ -291,9 +293,11 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 						return
 					}
 					fileName = params.SourceURL
-					fileContent = content
+					files = []nsbUploadedFile{{Name: fileName, Content: content}}
+				} else if !hasFiles {
+					files = []nsbUploadedFile{{Name: fileName, Content: params.FileContent}}
 				}
-				runNSBTask(ctx, session, fileName, fileContent, params.OutFile, params.MaxThreads, params.FallbackPort, params.SpeedTest, params.SpeedURL, params.EnableTLS, params.Delay, params.ResultLimit, params.DC, params.SpeedMin, params.SpeedLimit, params.Compact, scanMode, params.RelinkHost)
+				runNSBTaskWithFiles(ctx, session, fileName, files, params.OutFile, params.MaxThreads, params.FallbackPort, params.SpeedTest, params.SpeedURL, params.EnableTLS, params.Delay, params.ResultLimit, params.DC, params.SpeedMin, params.SpeedLimit, params.Compact, scanMode, params.RelinkHost)
 			})
 		},
 		"start_nsb_reallink": func(data json.RawMessage) {
@@ -482,6 +486,19 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			session.sendWSMessage("config_data", parsed)
+		},
+		"get_locations": func(data json.RawMessage) {
+			list := make([]location, 0, len(locationMap))
+			for _, loc := range locationMap {
+				if strings.TrimSpace(loc.Iata) == "" {
+					continue
+				}
+				list = append(list, loc)
+			}
+			sort.Slice(list, func(i, j int) bool {
+				return list[i].Iata < list[j].Iata
+			})
+			session.sendWSMessage("locations", list)
 		},
 		"check_proxy_country": func(data json.RawMessage) {
 			if skipGeoCheck {
