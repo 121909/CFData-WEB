@@ -62,35 +62,38 @@ type startNSBTaskRequest struct {
 	Delay        int     `json:"delay"`
 	ResultLimit  int     `json:"resultLimit"`
 	DC           string  `json:"dc"`
-	SpeedMin     float64 `json:"speedMin"`
-	SpeedLimit   int     `json:"speedLimit"`
-	Compact      bool    `json:"compact"`
-	ScanMode     string  `json:"scanMode"`
-	RelinkHost   string  `json:"relinkHost"`
+	SpeedMin       float64 `json:"speedMin"`
+	SpeedLimit     int     `json:"speedLimit"`
+	SpeedLimitMode string  `json:"speedLimitMode"`
+	Compact        bool    `json:"compact"`
+	ScanMode       string  `json:"scanMode"`
+	RelinkHost     string  `json:"relinkHost"`
 }
 
 type startNSBReallinkRequest struct {
-	Results    []nsbScanMessage `json:"results"`
-	RelinkHost string           `json:"relinkHost"`
-	OutFile    string           `json:"outFile"`
-	SpeedTest  int              `json:"speedTest"`
-	SpeedURL   string           `json:"speedURL"`
-	EnableTLS  bool             `json:"enableTLS"`
-	SpeedMin   float64          `json:"speedMin"`
-	SpeedLimit int              `json:"speedLimit"`
-	Compact    bool             `json:"compact"`
-	ScanMode   string           `json:"scanMode"`
+	Results        []nsbScanMessage `json:"results"`
+	RelinkHost     string           `json:"relinkHost"`
+	OutFile        string           `json:"outFile"`
+	SpeedTest      int              `json:"speedTest"`
+	SpeedURL       string           `json:"speedURL"`
+	EnableTLS      bool             `json:"enableTLS"`
+	SpeedMin       float64          `json:"speedMin"`
+	SpeedLimit     int              `json:"speedLimit"`
+	SpeedLimitMode string           `json:"speedLimitMode"`
+	Compact        bool             `json:"compact"`
+	ScanMode       string           `json:"scanMode"`
 }
 
 type startNSBSpeedBatchRequest struct {
-	Results    []nsbScanMessage `json:"results"`
-	SpeedTest  int              `json:"speedTest"`
-	SpeedURL   string           `json:"speedURL"`
-	EnableTLS  bool             `json:"enableTLS"`
-	SpeedMin   float64          `json:"speedMin"`
-	SpeedLimit int              `json:"speedLimit"`
-	SkipTested bool             `json:"skipTested"`
-	Compact    bool             `json:"compact"`
+	Results        []nsbScanMessage `json:"results"`
+	SpeedTest      int              `json:"speedTest"`
+	SpeedURL       string           `json:"speedURL"`
+	EnableTLS      bool             `json:"enableTLS"`
+	SpeedMin       float64          `json:"speedMin"`
+	SpeedLimit     int              `json:"speedLimit"`
+	SpeedLimitMode string           `json:"speedLimitMode"`
+	SkipTested     bool             `json:"skipTested"`
+	Compact        bool             `json:"compact"`
 }
 
 type edgetunnelUploadRequest struct {

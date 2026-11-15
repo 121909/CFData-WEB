@@ -279,7 +279,7 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 			if scanMode == "" {
 				scanMode = scanModeTCPing
 			}
-			session.startTaskNamed("非标优选", "nsb", map[string]interface{}{"fileName": params.FileName, "sourceURL": params.SourceURL, "outFile": params.OutFile, "maxThreads": params.MaxThreads, "fallbackPort": params.FallbackPort, "speedTest": params.SpeedTest, "speedURL": params.SpeedURL, "enableTLS": params.EnableTLS, "delay": params.Delay, "resultLimit": params.ResultLimit, "dc": params.DC, "speedMin": params.SpeedMin, "speedLimit": params.SpeedLimit, "compact": params.Compact, "scanMode": scanMode}, func(ctx context.Context, session *appSession) {
+			session.startTaskNamed("非标优选", "nsb", map[string]interface{}{"fileName": params.FileName, "sourceURL": params.SourceURL, "outFile": params.OutFile, "maxThreads": params.MaxThreads, "fallbackPort": params.FallbackPort, "speedTest": params.SpeedTest, "speedURL": params.SpeedURL, "enableTLS": params.EnableTLS, "delay": params.Delay, "resultLimit": params.ResultLimit, "dc": params.DC, "speedMin": params.SpeedMin, "speedLimit": params.SpeedLimit, "speedLimitMode": params.SpeedLimitMode, "compact": params.Compact, "scanMode": scanMode}, func(ctx context.Context, session *appSession) {
 				fileName := params.FileName
 				files := params.Files
 				if hasSourceURL {
@@ -297,7 +297,7 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 				} else if !hasFiles {
 					files = []nsbUploadedFile{{Name: fileName, Content: params.FileContent}}
 				}
-				runNSBTaskWithFiles(ctx, session, fileName, files, params.OutFile, params.MaxThreads, params.FallbackPort, params.SpeedTest, params.SpeedURL, params.EnableTLS, params.Delay, params.ResultLimit, params.DC, params.SpeedMin, params.SpeedLimit, params.Compact, scanMode, params.RelinkHost)
+				runNSBTaskWithFiles(ctx, session, fileName, files, params.OutFile, params.MaxThreads, params.FallbackPort, params.SpeedTest, params.SpeedURL, params.EnableTLS, params.Delay, params.ResultLimit, params.DC, params.SpeedMin, params.SpeedLimit, params.SpeedLimitMode, params.Compact, scanMode, params.RelinkHost)
 			})
 		},
 		"start_nsb_reallink": func(data json.RawMessage) {
@@ -334,8 +334,8 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 			if scanMode == "" {
 				scanMode = scanModeTCPing
 			}
-			session.startTaskNamed("链路复验", "nsb", map[string]interface{}{"outFile": params.OutFile, "speedTest": params.SpeedTest, "speedLimit": params.SpeedLimit}, func(ctx context.Context, session *appSession) {
-				runNSBReallinkTask(ctx, session, params.Results, params.RelinkHost, params.SpeedTest, params.SpeedURL, params.EnableTLS, params.SpeedMin, params.SpeedLimit, params.Compact, scanMode, params.OutFile)
+			session.startTaskNamed("链路复验", "nsb", map[string]interface{}{"outFile": params.OutFile, "speedTest": params.SpeedTest, "speedLimit": params.SpeedLimit, "speedLimitMode": params.SpeedLimitMode}, func(ctx context.Context, session *appSession) {
+				runNSBReallinkTask(ctx, session, params.Results, params.RelinkHost, params.SpeedTest, params.SpeedURL, params.EnableTLS, params.SpeedMin, params.SpeedLimit, params.SpeedLimitMode, params.Compact, scanMode, params.OutFile)
 			})
 		},
 		"start_nsb_speed_batch": func(data json.RawMessage) {
@@ -360,8 +360,8 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 				session.sendWSMessage("error", "没有可测速的非标结果")
 				return
 			}
-			session.startTaskNamed("非标批量测速", "nsb", map[string]interface{}{"speedTest": params.SpeedTest, "speedURL": params.SpeedURL, "enableTLS": params.EnableTLS, "speedMin": params.SpeedMin, "speedLimit": params.SpeedLimit, "skipTested": params.SkipTested, "compact": params.Compact}, func(ctx context.Context, session *appSession) {
-				runNSBSpeedBatch(ctx, session, params.Results, params.SpeedTest, params.SpeedURL, params.EnableTLS, params.SpeedMin, params.SpeedLimit, params.SkipTested, params.Compact)
+			session.startTaskNamed("非标批量测速", "nsb", map[string]interface{}{"speedTest": params.SpeedTest, "speedURL": params.SpeedURL, "enableTLS": params.EnableTLS, "speedMin": params.SpeedMin, "speedLimit": params.SpeedLimit, "speedLimitMode": params.SpeedLimitMode, "skipTested": params.SkipTested, "compact": params.Compact}, func(ctx context.Context, session *appSession) {
+				runNSBSpeedBatch(ctx, session, params.Results, params.SpeedTest, params.SpeedURL, params.EnableTLS, params.SpeedMin, params.SpeedLimit, params.SpeedLimitMode, params.SkipTested, params.Compact)
 			})
 		},
 		"stop_task": func(data json.RawMessage) {

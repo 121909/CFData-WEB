@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"reflect"
 	"testing"
 )
@@ -39,5 +40,34 @@ func TestMatchesTargetDC(t *testing.T) {
 		if got := matchesTargetDC(tc.dc, tc.target); got != tc.want {
 			t.Errorf("matchesTargetDC(%q, %q) = %v, want %v", tc.dc, tc.target, got, tc.want)
 		}
+	}
+}
+
+func TestRunNSBSpeedWorkersPerDC(t *testing.T) {
+	results := []iptestResult{
+		{ipAddr: "1.1.1.1", dataCenter: "HKG"},
+		{ipAddr: "1.1.1.2", dataCenter: "HKG"},
+		{ipAddr: "1.1.1.3", dataCenter: "HKG"},
+		{ipAddr: "2.2.2.1", dataCenter: "NRT"},
+		{ipAddr: "2.2.2.2", dataCenter: "NRT"},
+		{ipAddr: "2.2.2.3", dataCenter: "NRT"},
+	}
+	if got := calcNSBSpeedTargetTotal(results, 2, true); got != 4 {
+		t.Fatalf("calcNSBSpeedTargetTotal() = %d, want 4", got)
+	}
+	canceled := runNSBSpeedWorkersWithMode(context.Background(), results, 2, 2, true, 1.0, nil, nil, func(idx int) (float64, string) {
+		return 2048, "" // 2.0 MB/s
+	})
+	if canceled {
+		t.Fatalf("expected not canceled")
+	}
+	counts := map[string]int{}
+	for _, r := range results {
+		if r.speedQualified {
+			counts[r.dataCenter]++
+		}
+	}
+	if counts["HKG"] != 2 || counts["NRT"] != 2 {
+		t.Fatalf("expected 2 qualified per DC, got %+v", counts)
 	}
 }

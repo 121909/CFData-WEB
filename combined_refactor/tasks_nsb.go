@@ -644,10 +644,10 @@ done:
 }
 
 func runNSBTask(ctx context.Context, session *appSession, fileName, fileContent, outFile string, maxThreads, fallbackPort, speedTest int, speedURL string, enableTLS bool, delay int, resultLimit int, targetDC string, speedMin float64, speedLimit int, compact bool, scanMode string, reallinkHost string) {
-	runNSBTaskWithFiles(ctx, session, fileName, []nsbUploadedFile{{Name: fileName, Content: fileContent}}, outFile, maxThreads, fallbackPort, speedTest, speedURL, enableTLS, delay, resultLimit, targetDC, speedMin, speedLimit, compact, scanMode, reallinkHost)
+	runNSBTaskWithFiles(ctx, session, fileName, []nsbUploadedFile{{Name: fileName, Content: fileContent}}, outFile, maxThreads, fallbackPort, speedTest, speedURL, enableTLS, delay, resultLimit, targetDC, speedMin, speedLimit, "", compact, scanMode, reallinkHost)
 }
 
-func runNSBTaskWithFiles(ctx context.Context, session *appSession, fileName string, files []nsbUploadedFile, outFile string, maxThreads, fallbackPort, speedTest int, speedURL string, enableTLS bool, delay int, resultLimit int, targetDC string, speedMin float64, speedLimit int, compact bool, scanMode string, reallinkHost string) {
+func runNSBTaskWithFiles(ctx context.Context, session *appSession, fileName string, files []nsbUploadedFile, outFile string, maxThreads, fallbackPort, speedTest int, speedURL string, enableTLS bool, delay int, resultLimit int, targetDC string, speedMin float64, speedLimit int, speedLimitMode string, compact bool, scanMode string, reallinkHost string) {
 	session.sendWSMessage("log", fmt.Sprintf("开始非标优选：%s", fileName))
 
 	if fallbackPort <= 0 {
@@ -818,11 +818,13 @@ func runNSBTaskWithFiles(ctx context.Context, session *appSession, fileName stri
 		completionMessage = "任务已手动终止，已整理当前扫描结果"
 	}
 	if !wasCanceled && ctx.Err() == nil && speedTest > 0 && speedLimit > 0 {
-		session.sendWSMessage("log", fmt.Sprintf("开始测速：%d 条记录，线程数=%d，目标上限=%d，测速阈值=%.2fMB/s", len(nsbResults), speedTest, speedLimit, speedMin))
+		perDC := isPerDCSpeedLimitMode(speedLimitMode)
+		effectiveLimit := calcNSBSpeedTargetTotal(nsbResults, speedLimit, perDC)
+		session.sendWSMessage("log", fmt.Sprintf("开始测速：%d 条记录，线程数=%d，%s，测速阈值=%.2fMB/s", len(nsbResults), speedTest, formatNSBSpeedLimitLabel(speedLimit, effectiveLimit, perDC), speedMin))
 
-		reportNSBProgress(session, "speed", 0, speedLimit, "测速中")
-		speedCanceled := runNSBSpeedWorkers(ctx, nsbResults, speedTest, speedLimit, speedMin, func(tested, qualified int) {
-			reportNSBProgress(session, "speed", min(qualified, speedLimit), speedLimit, "测速中")
+		reportNSBProgress(session, "speed", 0, effectiveLimit, "测速中")
+		speedCanceled := runNSBSpeedWorkersWithMode(ctx, nsbResults, speedTest, speedLimit, perDC, speedMin, func(tested, qualified int) {
+			reportNSBProgress(session, "speed", min(qualified, effectiveLimit), effectiveLimit, "测速中")
 		}, func(idx int, speedErr string) {
 			res := &nsbResults[idx]
 			session.sendWSMessage("nsb_scan_result", res.toNSBLiveMessage(res.speedText, compact))
@@ -858,7 +860,7 @@ func runNSBTaskWithFiles(ctx context.Context, session *appSession, fileName stri
 		if qualifiedCount == 0 {
 			completionStatus = "failed"
 			completionMessage = "未找到符合要求的结果"
-		} else if speedLimit > 0 && qualifiedCount < speedLimit {
+		} else if effectiveLimit > 0 && qualifiedCount < effectiveLimit {
 			completionStatus = "partial"
 			completionMessage = "测试完成，未能完成任务需求结果"
 		}
@@ -1003,7 +1005,7 @@ func runNSBReallinkFilter(ctx context.Context, session *appSession, results []ip
 	return kept, len(kept), removed
 }
 
-func runNSBReallinkTask(ctx context.Context, session *appSession, rows []nsbScanMessage, reallinkHost string, speedTest int, speedURL string, enableTLS bool, speedMin float64, speedLimit int, compact bool, scanMode string, outFile string) {
+func runNSBReallinkTask(ctx context.Context, session *appSession, rows []nsbScanMessage, reallinkHost string, speedTest int, speedURL string, enableTLS bool, speedMin float64, speedLimit int, speedLimitMode string, compact bool, scanMode string, outFile string) {
 	reallinkHost = strings.TrimSpace(reallinkHost)
 	if reallinkHost == "" {
 		session.sendWSMessage("error", "链路复验未配置探针域名（relinkhost）")
@@ -1040,10 +1042,12 @@ func runNSBReallinkTask(ctx context.Context, session *appSession, rows []nsbScan
 		completionStatus = "partial"
 		completionMessage = "任务已手动终止，已整理当前可用结果"
 	} else if speedTest > 0 && speedLimit > 0 {
-		session.sendWSMessage("log", fmt.Sprintf("开始测速：%d 条记录，线程数=%d，目标上限=%d，测速阈值=%.2fMB/s", len(results), speedTest, speedLimit, speedMin))
-		reportNSBProgress(session, "speed", 0, speedLimit, "测速中")
-		speedCanceled := runNSBSpeedWorkers(ctx, results, speedTest, speedLimit, speedMin, func(tested, qualified int) {
-			reportNSBProgress(session, "speed", min(qualified, speedLimit), speedLimit, "测速中")
+		perDC := isPerDCSpeedLimitMode(speedLimitMode)
+		effectiveLimit := calcNSBSpeedTargetTotal(results, speedLimit, perDC)
+		session.sendWSMessage("log", fmt.Sprintf("开始测速：%d 条记录，线程数=%d，%s，测速阈值=%.2fMB/s", len(results), speedTest, formatNSBSpeedLimitLabel(speedLimit, effectiveLimit, perDC), speedMin))
+		reportNSBProgress(session, "speed", 0, effectiveLimit, "测速中")
+		speedCanceled := runNSBSpeedWorkersWithMode(ctx, results, speedTest, speedLimit, perDC, speedMin, func(tested, qualified int) {
+			reportNSBProgress(session, "speed", min(qualified, effectiveLimit), effectiveLimit, "测速中")
 		}, func(idx int, speedErr string) {
 			res := &results[idx]
 			session.sendWSMessage("nsb_scan_result", res.toNSBLiveMessage(res.speedText, compact))
@@ -1070,7 +1074,7 @@ func runNSBReallinkTask(ctx context.Context, session *appSession, rows []nsbScan
 		} else if qualifiedCount == 0 {
 			completionStatus = "failed"
 			completionMessage = "未找到符合要求的结果"
-		} else if speedLimit > 0 && qualifiedCount < speedLimit {
+		} else if effectiveLimit > 0 && qualifiedCount < effectiveLimit {
 			completionStatus = "partial"
 			completionMessage = "测试完成，未能完成任务需求结果"
 		}
@@ -1094,7 +1098,7 @@ func runNSBReallinkTask(ctx context.Context, session *appSession, rows []nsbScan
 	session.sendWSMessage("log", fmt.Sprintf("链路复验完成，结果文件: %s", outFile))
 }
 
-func runNSBSpeedBatch(ctx context.Context, session *appSession, rows []nsbScanMessage, maxWorkers int, speedURL string, enableTLS bool, speedMin float64, speedLimit int, skipTested bool, compact bool) {
+func runNSBSpeedBatch(ctx context.Context, session *appSession, rows []nsbScanMessage, maxWorkers int, speedURL string, enableTLS bool, speedMin float64, speedLimit int, speedLimitMode string, skipTested bool, compact bool) {
 	if speedLimit <= 0 {
 		session.sendWSMessage("log", "非标批量测速已关闭（测速上限 0）")
 		session.sendWSMessage("nsb_speed_complete", map[string]interface{}{"qualified": 0, "limit": speedLimit})
@@ -1130,10 +1134,12 @@ func runNSBSpeedBatch(ctx context.Context, session *appSession, rows []nsbScanMe
 		return
 	}
 
-	session.sendWSMessage("log", fmt.Sprintf("开始非标测速：%d 条记录，线程数=%d，目标上限=%d，测速阈值=%.2fMB/s", len(results), maxWorkers, speedLimit, speedMin))
-	reportNSBProgress(session, "speed", 0, speedLimit, "测速中")
-	speedCanceled := runNSBSpeedWorkers(ctx, results, maxWorkers, speedLimit, speedMin, func(tested, qualified int) {
-		reportNSBProgress(session, "speed", qualified, speedLimit, "测速中")
+	perDC := isPerDCSpeedLimitMode(speedLimitMode)
+	effectiveLimit := calcNSBSpeedTargetTotal(results, speedLimit, perDC)
+	session.sendWSMessage("log", fmt.Sprintf("开始非标测速：%d 条记录，线程数=%d，%s，测速阈值=%.2fMB/s", len(results), maxWorkers, formatNSBSpeedLimitLabel(speedLimit, effectiveLimit, perDC), speedMin))
+	reportNSBProgress(session, "speed", 0, effectiveLimit, "测速中")
+	speedCanceled := runNSBSpeedWorkersWithMode(ctx, results, maxWorkers, speedLimit, perDC, speedMin, func(tested, qualified int) {
+		reportNSBProgress(session, "speed", min(qualified, effectiveLimit), effectiveLimit, "测速中")
 	}, func(idx int, speedErr string) {
 		res := &results[idx]
 		session.sendWSMessage("nsb_scan_result", res.toNSBLiveMessage(res.speedText, compact))
@@ -1157,8 +1163,8 @@ func runNSBSpeedBatch(ctx context.Context, session *appSession, rows []nsbScanMe
 		return
 	}
 	totalQualified := countNSBTotalQualified(rows, results, speedMin)
-	session.sendWSMessage("log", fmt.Sprintf("非标批量测速完成，达标 %d/%d，总达标 %d", qualifiedCount, speedLimit, totalQualified))
-	session.sendWSMessage("nsb_speed_complete", map[string]interface{}{"qualified": qualifiedCount, "totalQualified": totalQualified, "limit": speedLimit})
+	session.sendWSMessage("log", fmt.Sprintf("非标批量测速完成，达标 %d/%d，总达标 %d", qualifiedCount, effectiveLimit, totalQualified))
+	session.sendWSMessage("nsb_speed_complete", map[string]interface{}{"qualified": qualifiedCount, "totalQualified": totalQualified, "limit": effectiveLimit})
 }
 
 func countNSBTotalQualified(rows []nsbScanMessage, updated []iptestResult, speedMin float64) int {
@@ -1241,7 +1247,40 @@ func getNSBSpeedStatus(value string, speedMin float64) string {
 	return "unqualified"
 }
 
+func isPerDCSpeedLimitMode(mode string) bool {
+	return strings.EqualFold(strings.TrimSpace(mode), "per_dc")
+}
+
+func calcNSBSpeedTargetTotal(results []iptestResult, speedLimit int, perDC bool) int {
+	if speedLimit <= 0 {
+		return 0
+	}
+	if !perDC {
+		return speedLimit
+	}
+	dcs := make(map[string]struct{})
+	for i := range results {
+		dc := strings.ToUpper(strings.TrimSpace(results[i].dataCenter))
+		dcs[dc] = struct{}{}
+	}
+	if len(dcs) == 0 {
+		return speedLimit
+	}
+	return speedLimit * len(dcs)
+}
+
+func formatNSBSpeedLimitLabel(speedLimit, effectiveLimit int, perDC bool) string {
+	if perDC {
+		return fmt.Sprintf("目标上限=各数据中心 %d（总计 %d）", speedLimit, effectiveLimit)
+	}
+	return fmt.Sprintf("目标上限=%d", speedLimit)
+}
+
 func runNSBSpeedWorkers(ctx context.Context, results []iptestResult, maxWorkers, targetQualified int, speedMin float64, onProgress func(tested, qualified int), onResult func(idx int, speedErr string), work func(idx int) (float64, string)) bool {
+	return runNSBSpeedWorkersWithMode(ctx, results, maxWorkers, targetQualified, false, speedMin, onProgress, onResult, work)
+}
+
+func runNSBSpeedWorkersWithMode(ctx context.Context, results []iptestResult, maxWorkers, targetQualified int, perDC bool, speedMin float64, onProgress func(tested, qualified int), onResult func(idx int, speedErr string), work func(idx int) (float64, string)) bool {
 	if len(results) == 0 {
 		return false
 	}
@@ -1295,41 +1334,76 @@ func runNSBSpeedWorkers(ctx context.Context, results []iptestResult, maxWorkers,
 		go worker()
 	}
 
-	next := 0
+	dispatched := make([]bool, len(results))
 	inFlight := 0
 	completed := 0
 	qualified := 0
+	qualifiedByDC := make(map[string]int)
+	inFlightByDC := make(map[string]int)
 	wasCanceled := false
-	shouldSend := func() bool {
-		return next < len(results) && qualified+inFlight < targetQualified
+
+	dcKey := func(idx int) string {
+		return strings.ToUpper(strings.TrimSpace(results[idx].dataCenter))
+	}
+	pickNextJob := func() (int, bool) {
+		if !perDC && qualified+inFlight >= targetQualified {
+			return -1, false
+		}
+		for i := 0; i < len(results); i++ {
+			if dispatched[i] {
+				continue
+			}
+			if perDC {
+				dc := dcKey(i)
+				if qualifiedByDC[dc]+inFlightByDC[dc] >= targetQualified {
+					continue
+				}
+			}
+			return i, true
+		}
+		return -1, false
 	}
 
-	for shouldSend() || inFlight > 0 {
+	for {
+		nextIdx, hasNext := pickNextJob()
+		if !hasNext && inFlight == 0 {
+			break
+		}
 		var jobCh chan int
-		if shouldSend() {
+		if hasNext {
 			jobCh = jobs
 		}
 		select {
 		case <-ctx.Done():
 			wasCanceled = true
-			next = len(results)
 			close(jobs)
 			return true
 		case item := <-done:
 			inFlight--
+			dc := dcKey(item.idx)
+			inFlightByDC[dc]--
 			completed++
 			if results[item.idx].speedQualified {
 				qualified++
+				qualifiedByDC[dc]++
 			}
 			if onResult != nil {
 				onResult(item.idx, item.err)
 			}
 			if onProgress != nil {
-				onProgress(completed, qualified)
+				progressQualified := qualified
+				if perDC {
+					progressQualified = 0
+					for _, cnt := range qualifiedByDC {
+						progressQualified += min(cnt, targetQualified)
+					}
+				}
+				onProgress(completed, progressQualified)
 			}
-		case jobCh <- next:
-			next++
+		case jobCh <- nextIdx:
+			dispatched[nextIdx] = true
 			inFlight++
+			inFlightByDC[dcKey(nextIdx)]++
 		}
 	}
 	close(jobs)

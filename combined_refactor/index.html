@@ -2029,8 +2029,14 @@
                     <input id="nsbSpeedMin" type="number" value="0.1" step="0.01" placeholder="默认 0.1MB/s" oninput="syncNSBSpeedConfigState()">
                 </div>
                 <div class="option-item">
-                    <span class="label" title="测速达标结果的最大数量，关闭测速填 0">🏁 测速结果数量</span>
-                    <input id="nsbSpeedLimit" type="number" value="5" placeholder="0 关闭测速">
+                    <span class="label" title="测速达标结果的最大数量，关闭测速填 0；可选择总数量或按各数据中心分别统计">🏁 测速结果数量</span>
+                    <div class="field-with-action">
+                        <select id="nsbSpeedLimitMode" class="speed-url-select" style="max-width:110px;flex:0 0 105px !important;">
+                            <option value="total" selected>总数量</option>
+                            <option value="per_dc">各数据中心</option>
+                        </select>
+                        <input id="nsbSpeedLimit" type="number" value="5" placeholder="0 关闭测速" style="flex:1;min-width:0;">
+                    </div>
                 </div>
                 <div class="option-item">
                     <span class="label" title="扫描完成后自动进行测速">🧪 自动测速</span>
@@ -3380,6 +3386,7 @@
                     fallbackPort: val('nsbFallbackPort'),
                     speedMin: val('nsbSpeedMin'),
                     speedLimit: val('nsbSpeedLimit'),
+                    speedLimitMode: selVal('nsbSpeedLimitMode'),
                     speedTest: val('nsbSpeedTest'),
                     enableSpeed: selVal('nsbEnableSpeed'),
                     targetDC: val('nsbTargetDC'),
@@ -3417,6 +3424,7 @@
             setValue('nsbFallbackPort', n.fallbackPort);
             setValue('nsbSpeedMin', n.speedMin);
             setValue('nsbSpeedLimit', n.speedLimit);
+            if (n.speedLimitMode) setValue('nsbSpeedLimitMode', n.speedLimitMode);
             setValue('nsbSpeedTest', n.speedTest);
             setValue('nsbEnableSpeed', n.enableSpeed);
             setValue('nsbTargetDC', n.targetDC);
@@ -4398,12 +4406,14 @@
         function syncNSBSpeedConfigState() {
             const speedMin = parseFloat(document.getElementById('nsbSpeedMin')?.value) || 0.1;
             const speedLimit = parseInt(document.getElementById('nsbSpeedLimit')?.value, 10) || 0;
+            const speedLimitMode = String(document.getElementById('nsbSpeedLimitMode')?.value || 'total');
             const speedTest = parseInt(document.getElementById('nsbSpeedTest')?.value, 10) || 0;
             const tlsMode = String(document.getElementById('nsbTls')?.value || 'on').toLowerCase();
             nsbSpeedMinValue = speedMin;
             return {
                 speedMin,
                 speedLimit,
+                speedLimitMode,
                 speedTest,
                 speedURL: resolveSpeedTestUrl('nsbSpeedUrl', 'nsbSpeedUrlPreset'),
                 enableTLS: tlsMode !== 'off',
@@ -5318,7 +5328,7 @@
             resetProgress();
             progressBox.style.display = 'block';
             updateNSBSpeedButtons();
-            if (!wsSend({ type: 'start_nsb_speed_batch', data: { results: rows, speedTest: cfg.speedTest, speedURL: cfg.speedURL, enableTLS: cfg.enableTLS, speedMin: cfg.speedMin, speedLimit: cfg.speedLimit, skipTested: continued, compact: nsbCompactView } })) {
+            if (!wsSend({ type: 'start_nsb_speed_batch', data: { results: rows, speedTest: cfg.speedTest, speedURL: cfg.speedURL, enableTLS: cfg.enableTLS, speedMin: cfg.speedMin, speedLimit: cfg.speedLimit, speedLimitMode: cfg.speedLimitMode, skipTested: continued, compact: nsbCompactView } })) {
                 nsbBatchSpeedRunning = false;
                 finishRunningTask('✨ 开始扫描与测试');
                 updateNSBSpeedButtons();
@@ -5594,6 +5604,7 @@
                     dc: targetDC,
                     speedMin,
                     speedLimit,
+                    speedLimitMode: String(document.getElementById('nsbSpeedLimitMode')?.value || 'total'),
                     compact,
                     scanMode: getScanMode(),
                     relinkHost: getNSBRelinkHost(speedTest > 0),
