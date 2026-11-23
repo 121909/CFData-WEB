@@ -179,6 +179,60 @@ func matchesTargetDC(dataCenter, targetDC string) bool {
 	return ok
 }
 
+func parsePortFilterSet(portFilter string) (map[int]struct{}, error) {
+	trimmed := strings.TrimSpace(portFilter)
+	if trimmed == "" {
+		return nil, nil
+	}
+	parts := strings.FieldsFunc(trimmed, func(r rune) bool {
+		return r == ',' || r == '，' || r == ';' || r == '；' || r == ' ' || r == '\t' || r == '\n' || r == '\r'
+	})
+	if len(parts) == 0 {
+		return nil, nil
+	}
+	set := make(map[int]struct{}, len(parts))
+	for _, p := range parts {
+		token := strings.TrimSpace(p)
+		if token == "" {
+			continue
+		}
+		port, ok := parsePort(token)
+		if !ok {
+			return nil, fmt.Errorf("端口过滤格式无效: %s（须为 1-65535）", token)
+		}
+		set[port] = struct{}{}
+	}
+	if len(set) == 0 {
+		return nil, nil
+	}
+	return set, nil
+}
+
+func filterNSBInputsByPort(items []string, portFilter string) ([]string, error) {
+	allowed, err := parsePortFilterSet(portFilter)
+	if err != nil {
+		return nil, err
+	}
+	if len(allowed) == 0 {
+		return items, nil
+	}
+	filtered := make([]string, 0, len(items))
+	for _, item := range items {
+		parts := strings.Fields(item)
+		if len(parts) < 2 {
+			continue
+		}
+		port, ok := parsePort(parts[1])
+		if !ok {
+			continue
+		}
+		if _, match := allowed[port]; match {
+			filtered = append(filtered, item)
+		}
+	}
+	return filtered, nil
+}
+
 func parseNSBCSVDocument(content string, fallbackPort int) []nsbEndpoint {
 	reader := csv.NewReader(strings.NewReader(content))
 	reader.TrimLeadingSpace = true

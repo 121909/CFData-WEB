@@ -644,10 +644,10 @@ done:
 }
 
 func runNSBTask(ctx context.Context, session *appSession, fileName, fileContent, outFile string, maxThreads, fallbackPort, speedTest int, speedURL string, enableTLS bool, delay int, resultLimit int, targetDC string, speedMin float64, speedLimit int, compact bool, scanMode string, reallinkHost string) {
-	runNSBTaskWithFiles(ctx, session, fileName, []nsbUploadedFile{{Name: fileName, Content: fileContent}}, outFile, maxThreads, fallbackPort, speedTest, speedURL, enableTLS, delay, resultLimit, targetDC, speedMin, speedLimit, "", compact, scanMode, reallinkHost)
+	runNSBTaskWithFiles(ctx, session, fileName, []nsbUploadedFile{{Name: fileName, Content: fileContent}}, outFile, maxThreads, fallbackPort, "", speedTest, speedURL, enableTLS, delay, resultLimit, targetDC, speedMin, speedLimit, "", compact, scanMode, reallinkHost)
 }
 
-func runNSBTaskWithFiles(ctx context.Context, session *appSession, fileName string, files []nsbUploadedFile, outFile string, maxThreads, fallbackPort, speedTest int, speedURL string, enableTLS bool, delay int, resultLimit int, targetDC string, speedMin float64, speedLimit int, speedLimitMode string, compact bool, scanMode string, reallinkHost string) {
+func runNSBTaskWithFiles(ctx context.Context, session *appSession, fileName string, files []nsbUploadedFile, outFile string, maxThreads, fallbackPort int, portFilter string, speedTest int, speedURL string, enableTLS bool, delay int, resultLimit int, targetDC string, speedMin float64, speedLimit int, speedLimitMode string, compact bool, scanMode string, reallinkHost string) {
 	session.sendWSMessage("log", fmt.Sprintf("开始非标优选：%s", fileName))
 
 	if fallbackPort <= 0 {
@@ -658,6 +658,20 @@ func runNSBTaskWithFiles(ctx context.Context, session *appSession, fileName stri
 	if len(ips) == 0 {
 		session.sendWSMessage("error", "上传文件中未找到有效的 ip 端口行")
 		return
+	}
+	if strings.TrimSpace(portFilter) != "" {
+		totalBefore := len(ips)
+		filtered, err := filterNSBInputsByPort(ips, portFilter)
+		if err != nil {
+			session.sendWSMessage("error", err.Error())
+			return
+		}
+		ips = filtered
+		session.sendWSMessage("log", fmt.Sprintf("端口过滤（%s）：从 %d 条记录中保留 %d 条", strings.TrimSpace(portFilter), totalBefore, len(ips)))
+		if len(ips) == 0 {
+			session.sendWSMessage("error", "端口过滤后未找到符合指定端口的 ip 记录")
+			return
+		}
 	}
 
 	expandedEntries := make([]struct {

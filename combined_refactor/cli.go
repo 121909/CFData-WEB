@@ -40,6 +40,7 @@ type cliConfig struct {
 	nsbURL          string
 	outFile         string
 	nsbFallbackPort int
+	nsbPortFilter   string
 	speedTest       int
 	speedLimit      int
 	speedMin        float64
@@ -110,6 +111,7 @@ type cliFileConfig struct {
 	File            string  `json:"nsbfile"`
 	SourceURL       string  `json:"nsbsourceurl"`
 	NSBFallbackPort int     `json:"nsbfallbackport"`
+	NSBPortFilter   string  `json:"nsbportfilter"`
 	NSBDC           string  `json:"nsbdc"`
 	Relink          bool    `json:"relink"`
 	RelinkHost      string  `json:"relinkhost"`
@@ -257,6 +259,7 @@ var (
 		{name: "nsbthreads", description: "非标模式扫描并发数", defaultValue: "100"},
 		{name: "nsbdelay", description: "非标模式延迟阈值（毫秒）；0 表示不筛延迟", defaultValue: "0"},
 		{name: "nsbfallbackport", description: "非标输入缺省端口；不填时随 TLS 自动使用 443/80", defaultValue: "0"},
+		{name: "nsbportfilter", description: "非标模式端口过滤；仅测试指定端口的 IP，支持逗号分隔如 443,8443；留空不限制", defaultValue: ""},
 		{name: "nsbdc", description: "非标模式指定结果数据中心；留空不限制", defaultValue: ""},
 		{name: "nsbspeedtest", description: "非标测速线程数；0 表示不测速。多 IP 并发影响实际速度，需要准确应设为 1", defaultValue: "0"},
 		{name: "nsburl", description: "非标模式测速下载地址；auto 表示由后端自动选择内置测速源", defaultValue: autoSpeedURLValue},
@@ -292,6 +295,7 @@ func registerCLIFlags() *cliConfig {
 	flag.StringVar(&cfg.file, "nsbfile", "", "非标模式输入文件路径")
 	flag.StringVar(&cfg.sourceURL, "nsbsourceurl", "", "非标模式网络输入 URL")
 	flag.IntVar(&cfg.nsbFallbackPort, "nsbfallbackport", 0, "非标输入缺省端口；不填时随 TLS 自动使用 443/80")
+	flag.StringVar(&cfg.nsbPortFilter, "nsbportfilter", "", "非标模式端口过滤，支持逗号分隔如 443,8443；留空不限制")
 	flag.StringVar(&cfg.outIPType, "outiptype", "all", "导出/上传 IP 类型筛选：all、ipv4 或 ipv6")
 	flag.StringVar(&cfg.outQualified, "outqualified", "all", "导出/上传合格结果筛选：all、qualified 或 unqualified")
 	flag.StringVar(&cfg.nsbDC, "nsbdc", "", "非标模式指定结果数据中心")
@@ -789,6 +793,7 @@ func buildCLIConfigHelp() []cliConfigHelp {
 		{Name: "nsbfile", Description: "非标模式输入文件路径", Default: ""},
 		{Name: "nsbsourceurl", Description: "非标模式网络输入 URL", Default: ""},
 		{Name: "nsbfallbackport", Description: "非标输入缺省端口；不填时随 TLS 自动使用 443/80；显式设置时必须为 1-65535", Default: "自动"},
+		{Name: "nsbportfilter", Description: "非标模式端口过滤；仅测试指定端口的 IP，支持逗号分隔如 443,8443；留空不限制", Default: ""},
 		{Name: "nsbdc", Description: "非标模式指定结果数据中心；留空不限制", Default: ""},
 		{Name: "nsbtls", Description: "非标模式启用 TLS；缺省端口随 TLS 为 443/80", Default: "true", Options: []string{"true", "false"}},
 		{Name: "nsbcompact", Description: "非标模式本地 CSV 是否默认精简字段", Default: "true", Options: []string{"true", "false"}},
@@ -900,6 +905,7 @@ func applyCLIFileConfig(cfg *cliConfig, fileCfg cliFileConfig, provided map[stri
 	if !provided["nsbfallbackport"] && fileCfg.NSBFallbackPort > 0 {
 		cfg.nsbFallbackPort = fileCfg.NSBFallbackPort
 	}
+	setString("nsbportfilter", &cfg.nsbPortFilter, fileCfg.NSBPortFilter)
 	setString("outiptype", &cfg.outIPType, fileCfg.OutIPType)
 	setString("outqualified", &cfg.outQualified, fileCfg.OutQualified)
 	setInt("outstartrow", &cfg.startRow, fileCfg.OutStartRow)
@@ -1242,6 +1248,9 @@ func runNSBCLI(cfg *cliConfig) error {
 	if cfg.nsbFallbackPort <= 0 || cfg.nsbFallbackPort > 65535 {
 		return errors.New("-nsbfallbackport 必须为 1-65535")
 	}
+	if _, err := parsePortFilterSet(cfg.nsbPortFilter); err != nil {
+		return err
+	}
 	if cfg.delay < 0 {
 		cfg.delay = 0
 	}
@@ -1274,7 +1283,7 @@ func runNSBCLI(cfg *cliConfig) error {
 		if scanMode == "" {
 			scanMode = scanModeTCPing
 		}
-		runNSBTask(ctx, session, inputName, content, cfg.outFile, cfg.threads, cfg.nsbFallbackPort, cfg.speedTest, speedTestURL, cfg.enableTLS, cfg.delay, cfg.resultLimit, cfg.nsbDC, cfg.nsbSpeedMin, cfg.nsbSpeedLimit, cfg.compactNSB, scanMode, func() string {
+		runNSBTaskWithFiles(ctx, session, inputName, []nsbUploadedFile{{Name: inputName, Content: content}}, cfg.outFile, cfg.threads, cfg.nsbFallbackPort, cfg.nsbPortFilter, cfg.speedTest, speedTestURL, cfg.enableTLS, cfg.delay, cfg.resultLimit, cfg.nsbDC, cfg.nsbSpeedMin, cfg.nsbSpeedLimit, "", cfg.compactNSB, scanMode, func() string {
 			if !cfg.relink {
 				return ""
 			}
@@ -1401,6 +1410,11 @@ func printCLIConfig(cfg *cliConfig) {
 		} else {
 			line("备用端口", "自动")
 		}
+		portFilterLabel := strings.TrimSpace(cfg.nsbPortFilter)
+		if portFilterLabel == "" {
+			portFilterLabel = "不限"
+		}
+		line("端口过滤", portFilterLabel)
 		line("并发数量", strconv.Itoa(cfg.threads))
 		line("扫描合格延迟", fmt.Sprintf("%dms", cfg.delay))
 		line("扫描合格数量", strconv.Itoa(cfg.resultLimit))

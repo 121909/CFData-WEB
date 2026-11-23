@@ -463,6 +463,30 @@ func runSettingsWizard(fileCfg *cliFileConfig) int {
 		}
 		fileCfg.NSBFallbackPort = n
 
+		pfCurrent := "不限"
+		if strings.TrimSpace(fileCfg.NSBPortFilter) != "" {
+			pfCurrent = fileCfg.NSBPortFilter
+		}
+		for {
+			v, o := askLine("端口过滤", pfCurrent, "仅测试指定端口的 IP（如 443 或 443,8443）；输入 0=不限制端口")
+			if o != promptOK {
+				return o
+			}
+			if v == "0" {
+				fileCfg.NSBPortFilter = ""
+				break
+			}
+			if v == "" {
+				break
+			}
+			if _, err := parsePortFilterSet(v); err != nil {
+				fmt.Printf("    %v\n", err)
+				continue
+			}
+			fileCfg.NSBPortFilter = v
+			break
+		}
+
 		n, o = askInt("并发数量", strconv.Itoa(fileCfg.NSBThreads), "同时扫描的 IP 数量，越大越快但占用带宽越多", fileCfg.NSBThreads, 1, 0)
 		if o != promptOK {
 			return o

@@ -54,9 +54,10 @@ type startNSBTaskRequest struct {
 	Files        []nsbUploadedFile `json:"files,omitempty"`
 	SourceURL    string            `json:"sourceURL"`
 	OutFile      string  `json:"outFile"`
-	MaxThreads   int     `json:"maxThreads"`
-	FallbackPort int     `json:"fallbackPort"`
-	SpeedTest    int     `json:"speedTest"`
+	MaxThreads     int     `json:"maxThreads"`
+	FallbackPort   int     `json:"fallbackPort"`
+	PortFilter     string  `json:"portFilter"`
+	SpeedTest      int     `json:"speedTest"`
 	SpeedURL     string  `json:"speedURL"`
 	EnableTLS    bool    `json:"enableTLS"`
 	Delay        int     `json:"delay"`

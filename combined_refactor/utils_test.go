@@ -71,3 +71,31 @@ func TestRunNSBSpeedWorkersPerDC(t *testing.T) {
 		t.Fatalf("expected 2 qualified per DC, got %+v", counts)
 	}
 }
+
+func TestFilterNSBInputsByPort(t *testing.T) {
+	items := []string{
+		"1.1.1.1 443",
+		"2.2.2.2 80",
+		"3.3.3.3 8443",
+		"4.4.4.4 2053",
+	}
+	gotAll, err := filterNSBInputsByPort(items, "")
+	if err != nil || !reflect.DeepEqual(gotAll, items) {
+		t.Fatalf("empty filter = %v, %v; want %v", gotAll, err, items)
+	}
+	gotSingle, err := filterNSBInputsByPort(items, "443")
+	if err != nil || !reflect.DeepEqual(gotSingle, []string{"1.1.1.1 443"}) {
+		t.Fatalf("single port filter = %v, %v", gotSingle, err)
+	}
+	gotMulti, err := filterNSBInputsByPort(items, "443, 8443；2053")
+	wantMulti := []string{"1.1.1.1 443", "3.3.3.3 8443", "4.4.4.4 2053"}
+	if err != nil || !reflect.DeepEqual(gotMulti, wantMulti) {
+		t.Fatalf("multi port filter = %v, %v; want %v", gotMulti, err, wantMulti)
+	}
+	if _, err := filterNSBInputsByPort(items, "443,abc"); err == nil {
+		t.Fatalf("expected error for invalid port filter")
+	}
+	if _, err := filterNSBInputsByPort(items, "70000"); err == nil {
+		t.Fatalf("expected error for out-of-range port filter")
+	}
+}

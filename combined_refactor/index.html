@@ -8,29 +8,95 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <style>
         :root {
-            --primary-color: #3b82f6;
-            --primary-hover: #2563eb;
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --error-color: #ef4444;
-            --bg-color: #eef1f5;
-            --card-bg: #fbfcfe;
-            --text-main: #243041;
-            --text-secondary: #64748b;
-            --border-color: #dbe2ea;
-            --radius: 16px;
-            --shadow: 0 18px 24px -8px rgba(30, 41, 59, .08), 0 8px 10px -8px rgba(30, 41, 59, .06), 0 0 0 1px rgba(30, 41, 59, .03);
+            --md-sys-color-primary: #0b57d0;
+            --md-sys-color-on-primary: #ffffff;
+            --md-sys-color-primary-container: #d3e3fd;
+            --md-sys-color-on-primary-container: #041e49;
+            --md-sys-color-secondary: #4a5e78;
+            --md-sys-color-on-secondary: #ffffff;
+            --md-sys-color-secondary-container: #d2e4ff;
+            --md-sys-color-on-secondary-container: #071c32;
+            --md-sys-color-tertiary: #146c2e;
+            --md-sys-color-on-tertiary: #ffffff;
+            --md-sys-color-tertiary-container: #c4eed0;
+            --md-sys-color-on-tertiary-container: #072711;
+            --md-sys-color-error: #b3261e;
+            --md-sys-color-on-error: #ffffff;
+            --md-sys-color-error-container: #f9dedc;
+            --md-sys-color-on-error-container: #410e0b;
+            --md-sys-color-warning: #9a5700;
+            --md-sys-color-warning-container: #ffdcbe;
+            --md-sys-color-on-warning-container: #2e1500;
+            --md-sys-color-background: #f8f9fc;
+            --md-sys-color-surface: #f8f9fc;
+            --md-sys-color-surface-container-lowest: #ffffff;
+            --md-sys-color-surface-container-low: #f2f4f9;
+            --md-sys-color-surface-container: #eceff5;
+            --md-sys-color-surface-container-high: #e6eaf1;
+            --md-sys-color-surface-container-highest: #e0e4ec;
+            --md-sys-color-on-surface: #1b1c1e;
+            --md-sys-color-on-surface-variant: #44474e;
+            --md-sys-color-outline: #74777f;
+            --md-sys-color-outline-variant: #c4c6d0;
+            --md-sys-elevation-1: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px 1px rgba(15, 23, 42, 0.04);
+            --md-sys-elevation-2: 0 2px 6px 2px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.08);
+            --md-sys-elevation-3: 0 8px 24px 4px rgba(15, 23, 42, 0.14), 0 2px 6px rgba(15, 23, 42, 0.10);
+
+            /* Compatibility aliases for inline JS & shared references */
+            --primary-color: var(--md-sys-color-primary);
+            --primary-hover: #0842a0;
+            --success-color: var(--md-sys-color-tertiary);
+            --warning-color: var(--md-sys-color-warning);
+            --error-color: var(--md-sys-color-error);
+            --bg-color: var(--md-sys-color-surface-container-low);
+            --card-bg: var(--md-sys-color-surface-container-lowest);
+            --text-main: var(--md-sys-color-on-surface);
+            --text-secondary: var(--md-sys-color-on-surface-variant);
+            --border-color: var(--md-sys-color-outline-variant);
+            --radius: 20px;
+            --shadow: var(--md-sys-elevation-1);
         }
 
         :root.dark-theme,
         body.dark-theme {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --border-color: #334155;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --md-sys-color-primary: #a8c7fa;
+            --md-sys-color-on-primary: #062e6f;
+            --md-sys-color-primary-container: #0842a0;
+            --md-sys-color-on-primary-container: #d3e3fd;
+            --md-sys-color-secondary: #b7c8e0;
+            --md-sys-color-on-secondary: #203148;
+            --md-sys-color-secondary-container: #354860;
+            --md-sys-color-on-secondary-container: #d2e4ff;
+            --md-sys-color-tertiary: #6dd58c;
+            --md-sys-color-on-tertiary: #003915;
+            --md-sys-color-tertiary-container: #0f5223;
+            --md-sys-color-on-tertiary-container: #c4eed0;
+            --md-sys-color-error: #f2b8b5;
+            --md-sys-color-on-error: #601410;
+            --md-sys-color-error-container: #8c1d18;
+            --md-sys-color-on-error-container: #f9dedc;
+            --md-sys-color-warning: #ffb870;
+            --md-sys-color-warning-container: #6d3a00;
+            --md-sys-color-on-warning-container: #ffdcbe;
+            --md-sys-color-background: #111318;
+            --md-sys-color-surface: #111318;
+            --md-sys-color-surface-container-lowest: #0c0e13;
+            --md-sys-color-surface-container-low: #191c22;
+            --md-sys-color-surface-container: #1d2026;
+            --md-sys-color-surface-container-high: #282a31;
+            --md-sys-color-surface-container-highest: #33353c;
+            --md-sys-color-on-surface: #e2e2e9;
+            --md-sys-color-on-surface-variant: #c4c6d0;
+            --md-sys-color-outline: #8e9099;
+            --md-sys-color-outline-variant: #44474e;
+            --md-sys-elevation-1: 0 1px 3px rgba(0, 0, 0, 0.35);
+            --md-sys-elevation-2: 0 4px 10px rgba(0, 0, 0, 0.42);
+            --md-sys-elevation-3: 0 12px 32px rgba(0, 0, 0, 0.56);
+
+            --primary-hover: #7cacf8;
+            --bg-color: var(--md-sys-color-surface-container);
+            --card-bg: var(--md-sys-color-surface-container-low);
+            background: var(--md-sys-color-background);
         }
 
         .no-transition,
@@ -43,7 +109,7 @@
             z-index: 9999;
             pointer-events: none;
             font-size: 13px;
-            font-weight: bold;
+            font-weight: 700;
             animation: copyFadeUp 0.8s ease-out forwards;
         }
 
@@ -52,17 +118,14 @@
                 opacity: 0;
                 transform: translateY(0);
             }
-
             20% {
                 opacity: 1;
                 transform: translateY(-10px);
             }
-
             80% {
                 opacity: 1;
                 transform: translateY(-15px);
             }
-
             100% {
                 opacity: 0;
                 transform: translateY(-20px);
@@ -75,27 +138,32 @@
 
         body {
             margin: 0;
-            padding: 15px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #eef2f6 0%, #e3e8ef 100%);
-            color: var(--text-main);
+            padding: 20px 16px 32px;
+            font-family: "Roboto", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: var(--md-sys-color-background);
+            color: var(--md-sys-color-on-surface);
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
             position: relative;
             max-width: 1200px;
             margin: 0 auto;
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 20px;
-            border: 1px solid rgba(148, 163, 184, 0.28);
-            box-shadow: var(--shadow);
+            background: var(--md-sys-color-surface-container-lowest);
+            border-radius: 28px;
+            padding: 24px;
+            border: 1px solid var(--md-sys-color-outline-variant);
+            box-shadow: var(--md-sys-elevation-1);
+        }
+
+        body.dark-theme .container {
+            background: var(--md-sys-color-surface-container-low);
         }
 
         .top-actions {
             position: absolute;
-            right: 20px;
-            top: 20px;
+            right: 24px;
+            top: 22px;
             display: flex;
             gap: 8px;
             z-index: 100;
@@ -103,40 +171,44 @@
 
         .settings-toggle,
         .github-link {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
+            background: var(--md-sys-color-surface-container);
+            border: 1px solid transparent;
+            border-radius: 9999px;
             width: 40px;
             height: 40px;
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
             line-height: 1;
-            transition: all 0.2s;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            color: var(--text-main);
+            transition: background-color 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
+            color: var(--md-sys-color-on-surface-variant);
             text-decoration: none;
         }
 
         .settings-toggle:hover,
         .github-link:hover {
-            transform: scale(1.1);
-            border-color: var(--primary-color);
+            background: var(--md-sys-color-surface-container-high);
+            color: var(--md-sys-color-primary);
+            transform: translateY(-1px);
         }
 
         .settings-menu {
             position: absolute;
-            right: 20px;
-            top: 68px;
-            width: 240px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            box-shadow: 0 12px 24px rgba(0, 0, 0, .12);
-            padding: 12px;
-            z-index: 30;
+            right: 24px;
+            top: 70px;
+            width: 268px;
+            background: var(--md-sys-color-surface-container-lowest);
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 16px;
+            box-shadow: var(--md-sys-elevation-3);
+            padding: 16px;
+            z-index: 120;
+        }
+
+        body.dark-theme .settings-menu {
+            background: var(--md-sys-color-surface-container-high);
         }
 
         .settings-menu.hidden {
@@ -144,10 +216,11 @@
         }
 
         .settings-title {
-            font-size: 13px;
-            color: var(--text-secondary);
+            font-size: 12px;
+            color: var(--md-sys-color-on-surface-variant);
             margin-bottom: 8px;
-            font-weight: 700;
+            font-weight: 600;
+            letter-spacing: 0.02em;
         }
 
         .theme-options {
@@ -158,124 +231,171 @@
         }
 
         .menu-btn {
-            border: 1px solid var(--border-color);
-            background: var(--bg-color);
-            color: var(--text-main);
-            border-radius: 8px;
-            padding: 8px 6px;
+            border: 1px solid var(--md-sys-color-outline-variant);
+            background: var(--md-sys-color-surface-container-low);
+            color: var(--md-sys-color-on-surface);
+            border-radius: 9999px;
+            padding: 8px 10px;
             font-size: 12px;
+            font-weight: 500;
             cursor: pointer;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
         }
 
         .menu-btn.active {
-            border-color: var(--primary-color);
-            color: #fff;
-            background: linear-gradient(135deg, var(--primary-color) 0%, #2563eb 100%);
+            border-color: transparent;
+            color: var(--md-sys-color-on-secondary-container);
+            background: var(--md-sys-color-secondary-container);
+            font-weight: 600;
         }
 
         .menu-btn:hover {
-            border-color: var(--primary-color);
+            border-color: var(--md-sys-color-primary);
+            background: color-mix(in srgb, var(--md-sys-color-primary) 8%, var(--md-sys-color-surface-container-low));
         }
 
         .danger-btn {
             width: 100%;
-            border: 1px solid #fca5a5;
-            background: #fff1f2;
-            color: #b91c1c;
-            border-radius: 8px;
-            padding: 10px;
+            border: 0;
+            background: var(--md-sys-color-error-container);
+            color: var(--md-sys-color-on-error-container);
+            border-radius: 9999px;
+            padding: 10px 14px;
             font-size: 13px;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
+            transition: filter 0.15s ease;
         }
 
         .danger-btn:hover {
-            border-color: #ef4444;
-            background: #ffe4e6;
-        }
-
-        body.dark-theme .danger-btn {
-            background: #3f1f2b;
-            color: #fecdd3;
-            border-color: #be123c;
+            filter: brightness(0.96);
         }
 
         h1 {
-            margin: 0 96px 16px;
+            margin: 0 132px 12px;
             text-align: center;
-            font-size: 1.75rem;
+            font-size: 1.65rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--md-sys-color-on-surface);
         }
 
         .version-line {
-            margin: -8px 96px 16px;
+            margin: -4px 132px 18px;
             text-align: center;
-            color: var(--text-secondary);
+            color: var(--md-sys-color-on-surface-variant);
             font-size: 12px;
+            font-weight: 500;
         }
 
         .version-line a {
-            color: var(--warning-color);
-            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 10px;
+            border-radius: 9999px;
+            background: var(--md-sys-color-warning-container);
+            color: var(--md-sys-color-on-warning-container);
+            font-weight: 600;
             text-decoration: none;
             margin-left: 8px;
         }
 
         .status-bar {
             margin-bottom: 16px;
-            padding: 12px 16px;
-            border-left: 4px solid var(--success-color);
-            border-radius: 8px;
-            background: linear-gradient(to right, #edf7f2, #f4faf6);
-            color: #065f46;
+            padding: 11px 16px;
+            border-radius: 14px;
+            background: var(--md-sys-color-tertiary-container);
+            color: var(--md-sys-color-on-tertiary-container);
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 14px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .status-bar::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 9999px;
+            background: currentColor;
+            flex-shrink: 0;
         }
 
         .status-bar.error {
-            border-left-color: var(--error-color);
-            background: linear-gradient(to right, #fbefef, #f8e3e3);
-            color: #991b1b;
+            background: var(--md-sys-color-error-container);
+            color: var(--md-sys-color-on-error-container);
         }
 
+        /* MD3 Segmented Button */
         .mode-switch {
             display: flex;
-            gap: 10px;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 9999px;
+            overflow: hidden;
+            background: var(--md-sys-color-surface-container-low);
         }
 
         .mode-btn {
             flex: 1;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 12px 16px;
+            border: 0;
+            border-right: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 0;
+            padding: 11px 16px;
+            min-height: 44px;
             cursor: pointer;
-            background: var(--bg-color);
-            color: var(--text-main);
-            font-weight: 700;
-            transition: all .2s ease;
+            background: transparent;
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background-color 0.16s ease, color 0.16s ease;
+        }
+
+        .mode-btn:last-child {
+            border-right: 0;
+        }
+
+        .mode-btn:hover:not(.active) {
+            background: color-mix(in srgb, var(--md-sys-color-on-surface) 6%, transparent);
         }
 
         .mode-btn.active {
-            background: linear-gradient(135deg, var(--primary-color), #2563eb);
-            color: #fff;
-            border-color: var(--primary-hover);
+            background: var(--md-sys-color-secondary-container);
+            color: var(--md-sys-color-on-secondary-container);
+        }
+
+        .mode-btn.active::before {
+            content: '✓';
+            font-size: 13px;
+            font-weight: 700;
         }
 
         .section-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 16px;
+            background: var(--md-sys-color-surface-container-low);
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 22px;
+            box-shadow: none;
+            margin-bottom: 18px;
             padding: 20px;
+        }
+
+        body.dark-theme .section-box {
+            background: var(--md-sys-color-surface-container);
         }
 
         @media (max-width: 768px) {
             h1 {
-                margin: 56px 0 16px;
-                font-size: 1.5rem;
+                margin: 54px 0 10px;
+                font-size: 1.45rem;
+            }
+
+            .version-line {
+                margin: -2px 0 14px;
             }
 
             .top-actions {
@@ -285,36 +405,42 @@
 
             .settings-menu {
                 right: 12px;
-                top: 58px;
+                top: 60px;
                 width: calc(100vw - 24px);
-                max-width: 260px;
+                max-width: 280px;
             }
         }
 
         .controls {
-            background: linear-gradient(135deg, var(--card-bg), var(--bg-color));
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 15px;
+            background: var(--md-sys-color-surface-container-low);
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 22px;
+            padding: 18px;
+        }
+
+        body.dark-theme .controls {
+            background: var(--md-sys-color-surface-container);
         }
 
         .controls .control-title {
-            display: block;
-            margin-bottom: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 4px;
         }
 
         #officialControls,
         #nsbControls {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 16px;
+            gap: 12px;
             min-width: 0;
         }
 
         .controls button {
             display: block;
             width: 100%;
-            margin-top: 15px;
+            margin-top: 14px;
         }
 
         .form-group {
@@ -324,8 +450,8 @@
         }
 
         .form-group label {
-            font-size: 13px;
-            color: var(--text-secondary);
+            font-size: 12px;
+            color: var(--md-sys-color-on-surface-variant);
             margin-bottom: 6px;
         }
 
@@ -341,36 +467,49 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: var(--text-main);
+            color: var(--md-sys-color-on-surface);
             font-size: 14px;
             min-height: 44px;
         }
 
         .option-item {
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 14px 16px;
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 16px;
+            padding: 12px 14px;
             display: flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--card-bg);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            min-height: 52px;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 6px;
+            background: var(--md-sys-color-surface-container-lowest);
+            box-shadow: none;
+            min-height: 0;
             box-sizing: border-box;
             height: 100%;
             min-width: 0;
+            transition: border-color 0.15s ease;
+        }
+
+        body.dark-theme .option-item {
+            background: var(--md-sys-color-surface-container-low);
+        }
+
+        .option-item:focus-within {
+            border-color: var(--md-sys-color-primary);
         }
 
         .option-item .label {
-            color: var(--text-secondary);
-            font-size: 13px;
-            width: 120px;
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            width: auto;
             flex-shrink: 0;
         }
 
         .option-item input,
         .option-item select {
-            flex: 1;
+            width: 100%;
+            flex: 0 0 auto;
             min-width: 0;
             box-sizing: border-box;
         }
@@ -379,44 +518,47 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            width: 100%;
             flex: 1;
             min-width: 0;
             max-width: 100%;
         }
 
         .option-item .field-with-action:has(.speed-url-select) {
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
         }
 
         .option-item .field-with-action .speed-url-select + input {
-            flex: 1 1 260px;
+            flex: 1 1 220px;
             min-width: 0;
         }
 
         .mini-action-btn {
-            width: 34px;
-            height: 34px;
+            width: 40px;
+            height: 40px;
             flex-shrink: 0;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: var(--bg-color);
-            color: var(--text-secondary);
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 9999px;
+            background: var(--md-sys-color-surface-container);
+            color: var(--md-sys-color-on-surface-variant);
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 15px;
             padding: 0;
+            transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
         }
 
         .controls .mini-action-btn {
-            width: 34px !important;
+            width: 40px !important;
             margin-top: 0 !important;
         }
 
         .mini-action-btn:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
+            border-color: var(--md-sys-color-primary);
+            background: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
         }
 
         .nsb-file-list {
@@ -424,7 +566,7 @@
             flex-wrap: wrap;
             align-items: center;
             gap: 6px;
-            margin-top: 8px;
+            margin-top: 4px;
         }
 
         .nsb-file-list.hidden {
@@ -435,12 +577,13 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 4px 10px;
-            border-radius: 999px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-color);
-            color: var(--text-main);
+            padding: 5px 12px;
+            border-radius: 9999px;
+            border: 1px solid transparent;
+            background: var(--md-sys-color-secondary-container);
+            color: var(--md-sys-color-on-secondary-container);
             font-size: 12px;
+            font-weight: 500;
             max-width: 240px;
         }
 
@@ -454,30 +597,31 @@
         .nsb-file-action {
             border: none;
             background: transparent;
-            color: var(--text-secondary);
+            color: inherit;
             cursor: pointer;
             padding: 0 2px;
-            font-size: 13px;
+            font-size: 14px;
             line-height: 1;
+            width: auto !important;
+            margin-top: 0 !important;
         }
 
-        .nsb-file-chip button:hover,
-        .nsb-file-action:hover {
-            color: var(--error-color);
+        .nsb-file-chip button:hover {
+            color: var(--md-sys-color-error);
         }
 
         .nsb-file-action {
-            border: 1px solid var(--border-color);
-            border-radius: 999px;
-            padding: 4px 10px;
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 9999px;
+            padding: 5px 12px;
             font-size: 12px;
-            background: var(--bg-color);
-            color: var(--text-main);
+            font-weight: 500;
+            background: transparent;
+            color: var(--md-sys-color-primary);
         }
 
         .nsb-file-action:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
+            background: color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent);
         }
 
         .nsb-dc-picker {
@@ -492,14 +636,18 @@
             right: 0;
             min-width: 270px;
             max-height: 340px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.16);
+            background: var(--md-sys-color-surface-container-lowest);
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 16px;
+            box-shadow: var(--md-sys-elevation-3);
             z-index: 80;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+        }
+
+        body.dark-theme .nsb-dc-dropdown {
+            background: var(--md-sys-color-surface-container-high);
         }
 
         .nsb-dc-dropdown.hidden {
@@ -507,18 +655,18 @@
         }
 
         .nsb-dc-dropdown-header {
-            padding: 8px;
-            border-bottom: 1px solid var(--border-color);
+            padding: 10px;
+            border-bottom: 1px solid var(--md-sys-color-outline-variant);
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            background: var(--card-bg);
+            gap: 8px;
+            background: inherit;
         }
 
         .nsb-dc-search {
             width: 100%;
-            min-height: 34px !important;
-            padding: 6px 10px !important;
+            min-height: 36px !important;
+            padding: 6px 12px !important;
             font-size: 13px !important;
         }
 
@@ -528,7 +676,7 @@
             justify-content: space-between;
             gap: 6px;
             font-size: 12px;
-            color: var(--text-secondary);
+            color: var(--md-sys-color-on-surface-variant);
         }
 
         .nsb-dc-actions-btns {
@@ -537,18 +685,22 @@
         }
 
         .nsb-dc-actions-btns button {
-            border: 1px solid var(--border-color);
-            background: var(--bg-color);
-            color: var(--text-main);
-            border-radius: 6px;
-            padding: 3px 8px;
+            border: 1px solid var(--md-sys-color-outline-variant);
+            background: var(--md-sys-color-surface-container);
+            color: var(--md-sys-color-on-surface);
+            border-radius: 9999px;
+            padding: 4px 10px;
             font-size: 12px;
+            font-weight: 500;
             cursor: pointer;
+            width: auto !important;
+            margin-top: 0 !important;
         }
 
         .nsb-dc-actions-btns button:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
+            border-color: var(--md-sys-color-primary);
+            background: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
         }
 
         .nsb-dc-list {
@@ -559,41 +711,42 @@
 
         .nsb-dc-group-title {
             font-size: 11px;
-            font-weight: 700;
-            color: var(--text-secondary);
-            padding: 6px 8px 4px;
-            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--md-sys-color-on-surface-variant);
+            padding: 8px 10px 4px;
+            letter-spacing: 0.03em;
         }
 
         .nsb-dc-option {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 6px 8px;
-            border-radius: 8px;
+            padding: 7px 10px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 13px;
-            color: var(--text-main);
+            color: var(--md-sys-color-on-surface);
             user-select: none;
         }
 
         .nsb-dc-option:hover {
-            background: var(--bg-color);
+            background: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
         }
 
         .nsb-dc-option input[type="checkbox"] {
-            width: 15px;
-            height: 15px;
-            min-height: 15px !important;
+            width: 16px;
+            height: 16px;
+            min-height: 16px !important;
             margin: 0;
             padding: 0;
             cursor: pointer;
             flex-shrink: 0;
+            accent-color: var(--md-sys-color-primary);
         }
 
         .nsb-dc-code {
             font-weight: 700;
-            min-width: 38px;
+            min-width: 42px;
         }
 
         .nsb-dc-name {
@@ -601,32 +754,32 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            color: var(--text-secondary);
+            color: var(--md-sys-color-on-surface-variant);
             font-size: 12px;
         }
 
         .nsb-dc-count {
             font-size: 11px;
-            padding: 1px 6px;
-            border-radius: 999px;
-            background: rgba(59, 130, 246, 0.12);
-            color: var(--primary-color);
+            padding: 2px 8px;
+            border-radius: 9999px;
+            background: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
             font-weight: 600;
         }
 
         .nsb-dc-empty {
-            padding: 14px 10px;
+            padding: 16px 12px;
             text-align: center;
             font-size: 12px;
-            color: var(--text-secondary);
+            color: var(--md-sys-color-on-surface-variant);
         }
 
         .speed-url-select {
             width: min(170px, 100%);
             max-width: 170px;
-            flex: 1 1 140px !important;
-            min-height: 44px;
-            font-size: 12px;
+            flex: 0 0 155px !important;
+            min-height: 40px;
+            font-size: 13px;
         }
 
         .option-item.full-width {
@@ -635,16 +788,46 @@
 
         input,
         select {
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            background: var(--bg-color);
-            color: var(--text-main);
-            min-height: 44px;
-            padding: 10px 12px;
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 12px;
+            background: var(--md-sys-color-surface-container-low);
+            color: var(--md-sys-color-on-surface);
+            min-height: 40px;
+            padding: 8px 12px;
             font-size: 14px;
             line-height: 20px;
             max-width: 100%;
             min-width: 0;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--md-sys-color-primary);
+            box-shadow: 0 0 0 2px color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent);
+            background: var(--md-sys-color-surface-container-lowest);
+        }
+
+        body.dark-theme input:focus,
+        body.dark-theme select:focus {
+            background: var(--md-sys-color-surface-container);
+        }
+
+        input[type="file"] {
+            padding: 6px 10px;
+            cursor: pointer;
+        }
+
+        input[type="file"]::file-selector-button {
+            border: 0;
+            border-radius: 9999px;
+            padding: 6px 14px;
+            margin-right: 10px;
+            background: var(--md-sys-color-secondary-container);
+            color: var(--md-sys-color-on-secondary-container);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
         }
 
         select {
@@ -652,23 +835,24 @@
             -webkit-appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 14px center;
+            background-position: right 12px center;
             background-size: 16px;
-            padding-right: 36px;
+            padding-right: 34px;
         }
 
         .control-title {
             grid-column: 1 / -1;
-            font-weight: 700;
-            color: var(--text-main);
-            margin: 4px 0 6px;
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--md-sys-color-on-surface);
+            margin: 2px 0 4px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .file-hint {
-            color: var(--text-secondary);
+            color: var(--md-sys-color-on-surface-variant);
             margin-top: 6px;
             font-size: 12px;
         }
@@ -684,60 +868,92 @@
 
         .btn {
             border: none;
-            border-radius: 10px;
+            border-radius: 9999px;
             cursor: pointer;
-            font-weight: 700;
+            font-weight: 600;
         }
 
         #btnStart {
             width: 100%;
-            padding: 14px;
-            font-size: 16px;
-            color: #fff;
-            background: linear-gradient(135deg, var(--primary-color), #2563eb);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, .3);
+            min-height: 48px;
+            padding: 12px 24px;
+            font-size: 15px;
+            letter-spacing: 0.01em;
+            color: var(--md-sys-color-on-primary);
+            background: var(--md-sys-color-primary);
+            box-shadow: var(--md-sys-elevation-1);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin-top: 8px;
+            margin-top: 14px;
             box-sizing: border-box;
+            transition: filter 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
+        }
+
+        #btnStart:hover:not(:disabled) {
+            filter: brightness(1.06);
+            box-shadow: var(--md-sys-elevation-2);
+        }
+
+        #btnStart.is-running {
+            background: var(--md-sys-color-error);
+            color: var(--md-sys-color-on-error);
         }
 
         .btn-spinner {
-            width: 14px;
-            height: 14px;
-            border: 2px solid rgba(255, 255, 255, .45);
-            border-top-color: rgba(255, 255, 255, .95);
+            width: 15px;
+            height: 15px;
+            border: 2px solid color-mix(in srgb, currentColor 35%, transparent);
+            border-top-color: currentColor;
             border-radius: 50%;
             display: inline-block;
             animation: spin 0.9s linear infinite;
             vertical-align: text-bottom;
         }
 
+        /* MD3 Primary Tabs */
         .tabs {
             display: flex;
-            border: 1px solid var(--border-color);
-            background: var(--bg-color);
-            border-radius: 12px;
-            padding: 4px;
-            gap: 4px;
-            margin-bottom: 14px;
+            border-bottom: 1px solid var(--md-sys-color-outline-variant);
+            background: transparent;
+            border-radius: 0;
+            padding: 0;
+            gap: 8px;
+            margin-bottom: 16px;
         }
 
         .tab {
+            position: relative;
             flex: 1;
-            padding: 10px 12px;
+            padding: 12px 16px;
             text-align: center;
             cursor: pointer;
-            border-radius: 8px;
-            color: var(--text-secondary);
-            font-weight: 700;
+            border-radius: 12px 12px 0 0;
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 14px;
+            font-weight: 600;
+            transition: background-color 0.15s ease, color 0.15s ease;
+        }
+
+        .tab:hover {
+            background: color-mix(in srgb, var(--md-sys-color-on-surface) 5%, transparent);
         }
 
         .tab.active {
-            color: var(--primary-color);
-            background: rgba(59, 130, 246, .1);
+            color: var(--md-sys-color-primary);
+            background: transparent;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            left: 16%;
+            right: 16%;
+            bottom: 0;
+            height: 3px;
+            border-radius: 3px 3px 0 0;
+            background: var(--md-sys-color-primary);
         }
 
         .tab[style*='display: none'] {
@@ -746,7 +962,7 @@
 
         .tab-content {
             display: none;
-            animation: fade .25s;
+            animation: fade .2s ease;
         }
 
         .tab-content.active {
@@ -756,9 +972,8 @@
         @keyframes fade {
             from {
                 opacity: 0;
-                transform: translateY(8px);
+                transform: translateY(6px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -768,34 +983,34 @@
         .progress-container {
             display: none;
             width: 100%;
-            background: var(--border-color);
-            border-radius: 12px;
+            background: var(--md-sys-color-surface-container-highest);
+            border-radius: 9999px;
             height: 24px;
             overflow: hidden;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
         }
 
         .progress-bar {
             height: 100%;
             width: 0%;
-            background: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent), linear-gradient(to right, var(--primary-color), #60a5fa);
-            background-size: 20px 20px, 100% 100%;
-            animation: stripe 1s linear infinite;
-            color: #fff;
+            background: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
             text-align: center;
             font-size: 12px;
             line-height: 24px;
-            font-weight: 700;
+            font-weight: 600;
+            border-radius: 9999px;
+            transition: width 0.2s ease, background-color 0.2s ease;
         }
 
         .background-status-card {
             display: none;
-            border: 1px solid rgba(59, 130, 246, 0.28);
-            border-radius: 12px;
-            background: color-mix(in srgb, var(--bg-color), var(--primary-color) 8%);
-            padding: 14px;
-            margin-bottom: 14px;
-            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 20px;
+            background: var(--md-sys-color-secondary-container);
+            color: var(--md-sys-color-on-secondary-container);
+            padding: 16px;
+            margin-bottom: 16px;
         }
 
         .background-status-card.active {
@@ -804,10 +1019,10 @@
 
         .background-confirm-card {
             display: none;
-            margin-top: 10px;
+            margin-top: 12px;
             margin-bottom: 0;
-            border-color: rgba(245, 158, 11, 0.45);
-            background: color-mix(in srgb, var(--bg-color), var(--warning-color) 10%);
+            background: var(--md-sys-color-warning-container);
+            color: var(--md-sys-color-on-warning-container);
         }
 
         .background-confirm-card.active {
@@ -815,9 +1030,11 @@
         }
 
         .background-confirm-text {
-            color: var(--text-secondary);
+            color: inherit;
+            opacity: 0.9;
             line-height: 1.7;
             margin: 8px 0 12px;
+            font-size: 13px;
         }
 
         .background-confirm-actions {
@@ -831,12 +1048,12 @@
             justify-content: space-between;
             align-items: center;
             gap: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .background-status-title {
-            font-weight: 800;
-            color: var(--text-main);
+            font-weight: 700;
+            color: inherit;
         }
 
         .background-status-grid {
@@ -846,28 +1063,33 @@
         }
 
         .background-status-item {
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 10px;
-            background: var(--card-bg);
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 14px;
+            padding: 12px;
+            background: var(--md-sys-color-surface-container-lowest);
+            color: var(--md-sys-color-on-surface);
             min-width: 0;
-            height: 96px;
+            height: 92px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             gap: 6px;
         }
 
+        body.dark-theme .background-status-item {
+            background: var(--md-sys-color-surface-container-low);
+        }
+
         .background-status-label {
             display: block;
             font-size: 12px;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
+            color: var(--md-sys-color-on-surface-variant);
+            margin-bottom: 2px;
         }
 
         .background-status-value {
-            font-weight: 700;
-            color: var(--text-main);
+            font-weight: 600;
+            color: var(--md-sys-color-on-surface);
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -907,7 +1129,7 @@
         }
 
         .background-stat-name {
-            color: var(--text-secondary);
+            color: var(--md-sys-color-on-surface-variant);
             text-align: right;
             white-space: nowrap;
         }
@@ -920,67 +1142,90 @@
 
         @keyframes stripe {
             from {
-                background-position: 0 0, 0 0;
+                background-position: 0 0;
             }
-
             to {
-                background-position: 20px 20px, 0 0;
+                background-position: 20px 20px;
             }
         }
 
         .scroll-table {
             overflow-x: auto;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 16px;
+            background: var(--md-sys-color-surface-container-lowest);
+        }
+
+        body.dark-theme .scroll-table {
+            background: var(--md-sys-color-surface-container-low);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             min-width: 700px;
-            font-size: 14px;
+            font-size: 13.5px;
         }
 
         th,
         td {
-            padding: 12px;
-            border-bottom: 1px solid var(--border-color);
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--md-sys-color-outline-variant);
             text-align: left;
             white-space: nowrap;
         }
 
         th {
-            background: var(--bg-color);
-            color: var(--text-secondary);
+            background: var(--md-sys-color-surface-container);
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
             position: sticky;
             top: 0;
             z-index: 10;
         }
 
+        tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
         tr:hover {
-            background: color-mix(in srgb, var(--bg-color), var(--primary-color) 6%);
+            background: color-mix(in srgb, var(--md-sys-color-primary) 5%, transparent);
         }
 
         .badge {
-            background: linear-gradient(135deg, var(--primary-color), #60a5fa);
-            color: #fff;
-            border-radius: 20px;
-            padding: 3px 10px;
-            font-size: 12px;
-        }
-
-        .action-btn {
-            padding: 7px 11px;
-            border: 0;
-            border-radius: 6px;
-            background: linear-gradient(135deg, var(--warning-color), #fbbf24);
-            color: #fff;
-            cursor: pointer;
-            font-size: 12px;
-            min-height: 34px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            background: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+            border-radius: 9999px;
+            padding: 2px 10px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .action-btn {
+            padding: 8px 14px;
+            border: 0;
+            border-radius: 9999px;
+            background: var(--md-sys-color-secondary-container);
+            color: var(--md-sys-color-on-secondary-container);
+            cursor: pointer;
+            font-size: 12.5px;
+            font-weight: 600;
+            min-height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: filter 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+        }
+
+        .action-btn:hover:not(:disabled) {
+            filter: brightness(0.96);
+            box-shadow: var(--md-sys-elevation-1);
         }
 
         .speed-btn {
@@ -1012,39 +1257,30 @@
         }
 
         .export-btn {
-            background: linear-gradient(135deg, var(--success-color), #059669) !important;
-            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2) !important;
+            background: var(--md-sys-color-primary) !important;
+            color: var(--md-sys-color-on-primary) !important;
+            box-shadow: none !important;
             border: none;
         }
 
-        .export-btn:hover {
-            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.4) !important;
+        .export-btn:hover:not(:disabled) {
+            filter: brightness(1.06);
+            box-shadow: var(--md-sys-elevation-1) !important;
         }
 
         .table-actions {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
         .official-test-actions,
         .nsb-scan-actions {
-            display: grid;
+            display: flex;
+            flex-wrap: wrap;
             align-items: center;
-            gap: 10px;
-        }
-
-        .official-test-actions {
-            grid-template-columns: auto minmax(92px, auto) minmax(92px, auto) auto auto auto;
-        }
-
-        .nsb-scan-actions {
-            grid-template-columns: auto auto auto minmax(92px, auto) minmax(92px, auto) auto auto;
-        }
-
-        .nsb-scan-actions.official-scan-actions {
-            grid-template-columns: minmax(92px, auto) minmax(92px, auto);
+            gap: 8px;
         }
 
         .official-test-actions .action-btn,
@@ -1058,16 +1294,17 @@
         #btnContinueBatchSpeed,
         #btnNSBBatchSpeed,
         #btnNSBContinueSpeed {
-            min-width: 92px;
+            min-width: 96px;
         }
 
         .table-filter-select {
             display: none;
             width: auto;
-            height: 34px;
-            min-height: 34px;
-            padding: 6px 30px 6px 10px;
+            height: 36px;
+            min-height: 36px;
+            padding: 6px 30px 6px 12px;
             font-size: 12px;
+            border-radius: 9999px;
         }
 
         .speed-unqualified {
@@ -1083,7 +1320,7 @@
             position: absolute;
             inset: 0;
             pointer-events: none;
-            background: rgba(245, 158, 11, 0.10);
+            background: color-mix(in srgb, var(--md-sys-color-warning) 9%, transparent);
         }
 
         .result-status-tag {
@@ -1091,15 +1328,15 @@
             align-items: center;
             justify-content: center;
             margin-left: 0;
-            padding: 1px 6px;
-            border-radius: 999px;
+            padding: 2px 8px;
+            border-radius: 9999px;
             font-size: 10px;
             line-height: 1.4;
             font-weight: 700;
             vertical-align: middle;
-            background: rgba(148, 163, 184, 0.16);
-            color: var(--text-secondary);
-            border: 1px solid rgba(148, 163, 184, 0.26);
+            background: var(--md-sys-color-surface-container-high);
+            color: var(--md-sys-color-on-surface-variant);
+            border: 1px solid var(--md-sys-color-outline-variant);
         }
 
         .result-status-slot {
@@ -1109,15 +1346,15 @@
         }
 
         .result-status-tag.unqualified {
-            background: rgba(245, 158, 11, 0.14);
-            color: #b45309;
-            border-color: rgba(245, 158, 11, 0.28);
+            background: var(--md-sys-color-warning-container);
+            color: var(--md-sys-color-on-warning-container);
+            border-color: transparent;
         }
 
         .result-status-tag.qualified {
-            background: rgba(16, 185, 129, 0.14);
-            color: #047857;
-            border-color: rgba(16, 185, 129, 0.28);
+            background: var(--md-sys-color-tertiary-container);
+            color: var(--md-sys-color-on-tertiary-container);
+            border-color: transparent;
         }
 
         tr.row-qualified td {
@@ -1129,9 +1366,10 @@
             position: absolute;
             inset: 0;
             pointer-events: none;
-            background: rgba(16, 185, 129, 0.12);
+            background: color-mix(in srgb, var(--md-sys-color-tertiary) 10%, transparent);
         }
 
+        /* MD3 Dialogs */
         .modal-mask {
             position: fixed;
             inset: 0;
@@ -1139,7 +1377,8 @@
             align-items: center;
             justify-content: center;
             padding: 18px;
-            background: rgba(15, 23, 42, 0.58);
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(4px);
             z-index: 1000;
         }
 
@@ -1154,11 +1393,15 @@
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            box-shadow: 0 24px 80px rgba(15, 23, 42, 0.35);
-            padding: 22px;
+            background: var(--md-sys-color-surface-container-lowest);
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 28px;
+            box-shadow: var(--md-sys-elevation-3);
+            padding: 24px;
+        }
+
+        body.dark-theme .result-modal {
+            background: var(--md-sys-color-surface-container-high);
         }
 
         .proxy-warning-modal {
@@ -1177,14 +1420,16 @@
 
         .notice-card-title {
             margin: 0;
-            color: var(--text-main);
+            color: var(--md-sys-color-on-surface);
             font-size: 20px;
+            font-weight: 600;
         }
 
         .notice-card-message {
             white-space: pre-line;
-            color: var(--text-secondary);
-            line-height: 1.7;
+            color: var(--md-sys-color-on-surface-variant);
+            line-height: 1.65;
+            font-size: 14px;
         }
 
         .proxy-warning-card {
@@ -1195,27 +1440,28 @@
 
         .proxy-warning-title {
             margin: 0;
-            color: #ef4444;
-            font-size: 24px;
+            color: var(--md-sys-color-error);
+            font-size: 22px;
+            font-weight: 600;
         }
 
         .proxy-warning-country {
             display: inline-flex;
             align-items: center;
             width: fit-content;
-            padding: 5px 10px;
-            border-radius: 999px;
-            background: rgba(239, 68, 68, 0.10);
-            color: #dc2626;
-            border: 1px solid rgba(239, 68, 68, 0.22);
+            padding: 5px 12px;
+            border-radius: 9999px;
+            background: var(--md-sys-color-error-container);
+            color: var(--md-sys-color-on-error-container);
             font-size: 12px;
-            font-weight: 800;
+            font-weight: 700;
         }
 
         .proxy-warning-card p,
         .proxy-warning-card li {
-            color: var(--text-secondary);
+            color: var(--md-sys-color-on-surface-variant);
             line-height: 1.7;
+            font-size: 14px;
         }
 
         .proxy-warning-card ul {
@@ -1228,13 +1474,13 @@
             justify-content: flex-end;
             gap: 10px;
             flex-wrap: wrap;
-            padding-top: 4px;
+            padding-top: 6px;
         }
 
         .proxy-warning-actions .danger-btn {
-            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
-            color: #fff !important;
-            box-shadow: 0 2px 4px rgba(239, 68, 68, 0.25) !important;
+            background: var(--md-sys-color-error) !important;
+            color: var(--md-sys-color-on-error) !important;
+            width: auto;
         }
 
         .modal-body {
@@ -1242,8 +1488,8 @@
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
-            padding-right: 18px;
-            margin-right: -8px;
+            padding-right: 14px;
+            margin-right: -6px;
             scrollbar-gutter: stable;
         }
 
@@ -1252,8 +1498,8 @@
         }
 
         .modal-body::-webkit-scrollbar-thumb {
-            background: rgba(148, 163, 184, 0.55);
-            border-radius: 999px;
+            background: var(--md-sys-color-outline-variant);
+            border-radius: 9999px;
         }
 
         .modal-body::-webkit-scrollbar-track {
@@ -1265,43 +1511,57 @@
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .modal-head h3 {
             margin: 0;
+            font-size: 20px;
+            font-weight: 600;
         }
 
         .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 9999px;
             border: 0;
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 24px;
+            background: var(--md-sys-color-surface-container);
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 20px;
+            line-height: 1;
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: var(--md-sys-color-surface-container-highest);
+            color: var(--md-sys-color-on-surface);
         }
 
         .modal-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px;
+            gap: 12px;
             max-width: 100%;
             overflow-x: hidden;
         }
 
         .sort-modal-section-title {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
-            color: var(--text-secondary);
-            letter-spacing: 1px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 4px;
-            margin-bottom: 2px;
+            color: var(--md-sys-color-primary);
+            letter-spacing: 0.04em;
+            border-bottom: 1px solid var(--md-sys-color-outline-variant);
+            padding-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .modal-field {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 6px;
         }
 
         .modal-field.full {
@@ -1310,8 +1570,8 @@
 
         .modal-field label {
             font-size: 12px;
-            color: var(--text-secondary);
-            font-weight: 700;
+            color: var(--md-sys-color-on-surface-variant);
+            font-weight: 600;
         }
 
         .field-head {
@@ -1329,8 +1589,9 @@
         }
 
         .field-head-actions .action-btn {
-            height: 28px;
-            padding: 0 10px;
+            height: 30px;
+            min-height: 30px;
+            padding: 0 12px;
             font-size: 12px;
         }
 
@@ -1338,28 +1599,31 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 8px;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         .field-pill {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 7px 8px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            gap: 8px;
+            padding: 8px 10px;
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 12px;
             font-size: 12px;
+            background: var(--md-sys-color-surface-container-low);
         }
 
         .field-pill input {
             width: auto;
+            min-height: auto;
+            accent-color: var(--md-sys-color-primary);
         }
 
         .order-list {
             display: flex;
             flex-direction: column;
             gap: 6px;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         .order-item {
@@ -1367,21 +1631,22 @@
             justify-content: space-between;
             align-items: center;
             gap: 8px;
-            padding: 7px 9px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: var(--bg-color);
+            padding: 8px 12px;
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 12px;
+            background: var(--md-sys-color-surface-container-low);
             font-size: 12px;
         }
 
         .order-item button {
             width: auto;
             height: auto;
-            padding: 3px 7px;
-            border-radius: 6px;
+            padding: 4px 10px;
+            border-radius: 9999px;
             border: 0;
-            color: #fff;
-            background: var(--primary-color);
+            color: var(--md-sys-color-on-secondary-container);
+            background: var(--md-sys-color-secondary-container);
+            font-weight: 600;
             cursor: pointer;
         }
 
@@ -1397,15 +1662,15 @@
             grid-column: 1 / -1;
             margin-top: 0;
             padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            background: color-mix(in srgb, var(--card-bg), var(--primary-color) 4%);
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 16px;
+            background: var(--md-sys-color-surface-container-low);
         }
 
         .modal-actions.footer {
             flex-shrink: 0;
             padding-top: 14px;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid var(--md-sys-color-outline-variant);
         }
 
         .github-account-row {
@@ -1435,25 +1700,27 @@
         .inline-check {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            color: var(--text-secondary);
-            font-weight: 700;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--md-sys-color-on-surface-variant);
+            font-weight: 500;
         }
 
         .inline-check input {
             width: auto;
+            min-height: auto;
             margin: 0;
             vertical-align: middle;
             flex-shrink: 0;
+            accent-color: var(--md-sys-color-primary);
         }
 
         .result-preview,
         .upload-status {
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            background: var(--bg-color);
-            padding: 10px;
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 12px;
+            background: var(--md-sys-color-surface-container-low);
+            padding: 10px 12px;
             font-size: 12px;
             white-space: pre-wrap;
             overflow-y: auto;
@@ -1464,15 +1731,17 @@
         }
 
         .upload-status.error {
-            color: var(--error-color);
-            border-color: var(--error-color);
-            font-weight: bold;
+            color: var(--md-sys-color-on-error-container);
+            background: var(--md-sys-color-error-container);
+            border-color: transparent;
+            font-weight: 600;
         }
 
         .upload-status.success {
-            color: #059669;
-            border-color: #10b981;
-            font-weight: bold;
+            color: var(--md-sys-color-on-tertiary-container);
+            background: var(--md-sys-color-tertiary-container);
+            border-color: transparent;
+            font-weight: 600;
         }
 
         .upload-status .copy-ip {
@@ -1480,18 +1749,22 @@
         }
 
         .action-btn.selected {
-            background: linear-gradient(135deg, #10b981, #34d399);
+            background: var(--md-sys-color-tertiary-container);
+            color: var(--md-sys-color-on-tertiary-container);
         }
 
         .action-btn:disabled {
-            background: #9ca3af;
+            background: var(--md-sys-color-surface-container-highest) !important;
+            color: var(--md-sys-color-outline) !important;
             cursor: not-allowed;
+            opacity: 0.72;
         }
 
         .copy-ip {
-            color: var(--primary-color);
+            color: var(--md-sys-color-primary);
             cursor: pointer;
-            border-bottom: 1px dashed var(--primary-color);
+            font-weight: 500;
+            border-bottom: 1px dashed color-mix(in srgb, var(--md-sys-color-primary) 55%, transparent);
         }
 
         .ip-cell {
@@ -1505,7 +1778,7 @@
             text-decoration: none;
             font-size: 13px;
             line-height: 1;
-            color: var(--text-secondary);
+            color: var(--md-sys-color-on-surface-variant);
             transition: opacity 0.12s ease, color 0.12s ease;
         }
 
@@ -1515,19 +1788,20 @@
         }
 
         .ip-detail-link:hover {
-            color: var(--primary-color);
+            color: var(--md-sys-color-primary);
         }
 
         .log-box {
-            background: #0f172a;
-            color: #34d399;
-            border-radius: 12px;
-            padding: 14px;
-            height: 180px;
+            background: #10141c;
+            color: #8be9b8;
+            border-radius: 20px;
+            padding: 16px;
+            height: 184px;
             overflow-y: auto;
-            font-family: Menlo, Monaco, "Courier New", monospace;
-            border: 1px solid #1e293b;
-            font-size: 13px;
+            font-family: "JetBrains Mono", Menlo, Monaco, "Courier New", monospace;
+            border: 1px solid var(--md-sys-color-outline-variant);
+            font-size: 12.5px;
+            line-height: 1.55;
             margin-top: 16px;
             cursor: text;
         }
@@ -1547,14 +1821,12 @@
             from {
                 transform: rotate(0deg);
             }
-
             to {
                 transform: rotate(360deg);
             }
         }
 
         @media (max-width: 768px) {
-
             .modal-mask {
                 align-items: flex-start;
                 padding: 10px;
@@ -1572,8 +1844,9 @@
             .result-modal {
                 width: calc(100vw - 20px);
                 max-height: 94vh;
-                padding: 18px 16px 18px 18px;
+                padding: 18px 16px;
                 margin: 0 auto;
+                border-radius: 24px;
             }
 
             .modal-body {
@@ -1689,26 +1962,11 @@
                 width: 100%;
             }
 
-            #btnScanCopy {
-                width: 100%;
-            }
-
-            #btnScanResultAction {
-                width: 100%;
-            }
-
-            #btnTestCopy {
-                width: 100%;
-            }
-
-            #btnTestResultAction {
-                width: 100%;
-            }
-
-            #btnNSBBatchSpeed {
-                width: 100%;
-            }
-
+            #btnScanCopy,
+            #btnScanResultAction,
+            #btnTestCopy,
+            #btnTestResultAction,
+            #btnNSBBatchSpeed,
             #btnNSBContinueSpeed {
                 width: 100%;
             }
@@ -1720,7 +1978,8 @@
 
             .controls,
             .container {
-                padding: 12px;
+                padding: 14px;
+                border-radius: 22px;
             }
 
             body {
@@ -1751,15 +2010,15 @@
 
             .option-item {
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
+                align-items: stretch;
+                gap: 6px;
                 height: auto;
                 padding: 12px;
             }
 
             .option-item .label {
                 width: 100%;
-                margin-bottom: 2px;
+                margin-bottom: 0;
             }
 
             .option-item input,
@@ -1778,7 +2037,7 @@
             }
 
             .option-item .field-with-action .speed-url-select + input {
-                flex: 1 1 calc(100% - 42px);
+                flex: 1 1 calc(100% - 48px);
             }
         }
 
@@ -1825,7 +2084,7 @@
         <h1>Cloudflare IP Data</h1>
         <div class="version-line" id="versionLine">dev</div>
         <div class="top-actions">
-            <a class="github-link" href="https://github.com/PoemMisty/CFData-WEB" target="_blank"
+            <a class="github-link" href="https://github.com/121909/CFData-WEB" target="_blank"
                 rel="noopener noreferrer" title="打开 GitHub 仓库" aria-label="打开 GitHub 仓库">
                 <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true" fill="currentColor">
                     <path
@@ -2013,6 +2272,28 @@
                     <input id="nsbFallbackPort" type="number" value="443" placeholder="关闭 TLS 默认 80，开启 TLS 默认 443">
                 </div>
                 <div class="option-item">
+                    <span class="label" title="仅测试指定端口的 IP，留空不限制；支持多选或逗号分隔如 443,8443">🔌 端口过滤</span>
+                    <div class="nsb-dc-picker" id="nsbPortPicker">
+                        <div class="field-with-action">
+                            <input id="nsbPortFilter" type="text" value="" placeholder="留空不限制，如 443,8443" oninput="onNSBPortInputChange()">
+                            <button type="button" class="mini-action-btn" title="选择过滤端口（可多选）" onclick="toggleNSBPortDropdown(event)">▾</button>
+                        </div>
+                        <div id="nsbPortDropdown" class="nsb-dc-dropdown hidden" onclick="event.stopPropagation()">
+                            <div class="nsb-dc-dropdown-header">
+                                <input id="nsbPortSearch" type="text" class="nsb-dc-search" placeholder="搜索端口号或输入自定义端口..." oninput="renderNSBPortOptions()">
+                                <div class="nsb-dc-actions">
+                                    <span id="nsbPortSelectedCount">已选 0 个</span>
+                                    <div class="nsb-dc-actions-btns">
+                                        <button type="button" onclick="selectAllFilteredNSBPort()">全选</button>
+                                        <button type="button" onclick="clearNSBPort()">清空</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="nsbPortList" class="nsb-dc-list"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="option-item">
                     <span class="label" title="同时扫描的线程数">🚀 并发数量</span>
                     <input id="nsbThreads" type="number" value="100" placeholder="默认 100">
                 </div>
@@ -2023,6 +2304,28 @@
                 <div class="option-item">
                     <span class="label" title="延迟测试通过的结果数量上限">🎯 扫描合格数量</span>
                     <input id="nsbResultLimit" type="number" value="1000" placeholder="非 0 正整数">
+                </div>
+                <div class="option-item">
+                    <span class="label" title="按数据中心筛选结果（支持多选，逗号分隔）">🏢 数据中心</span>
+                    <div class="nsb-dc-picker" id="nsbDCPicker">
+                        <div class="field-with-action">
+                            <input id="nsbTargetDC" type="text" value="" placeholder="留空不限制，支持多选如 HKG,NRT" oninput="onNSBDCInputChange()">
+                            <button type="button" class="mini-action-btn" title="选择数据中心（可多选）" onclick="toggleNSBDCDropdown(event)">▾</button>
+                        </div>
+                        <div id="nsbDCDropdown" class="nsb-dc-dropdown hidden" onclick="event.stopPropagation()">
+                            <div class="nsb-dc-dropdown-header">
+                                <input id="nsbDCSearch" type="text" class="nsb-dc-search" placeholder="搜索三字码 / 城市 / 地区..." oninput="renderNSBDCOptions()">
+                                <div class="nsb-dc-actions">
+                                    <span id="nsbDCSelectedCount">已选 0 个</span>
+                                    <div class="nsb-dc-actions-btns">
+                                        <button type="button" onclick="selectAllFilteredNSBDC()">全选</button>
+                                        <button type="button" onclick="clearNSBDC()">清空</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="nsbDCList" class="nsb-dc-list"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="option-item">
                     <span class="label" title="测速达标下限，单位 MB/s">📉 测试合格速度</span>
@@ -2050,28 +2353,6 @@
                     <input id="nsbSpeedTest" type="number" value="0" placeholder="0 关闭测速">
                 </div>
                 <div class="option-item">
-                    <span class="label" title="按数据中心筛选结果（支持多选，逗号分隔）">🏢 数据中心</span>
-                    <div class="nsb-dc-picker" id="nsbDCPicker">
-                        <div class="field-with-action">
-                            <input id="nsbTargetDC" type="text" value="" placeholder="留空不限制，支持多选如 HKG,NRT" oninput="onNSBDCInputChange()">
-                            <button type="button" class="mini-action-btn" title="选择数据中心（可多选）" onclick="toggleNSBDCDropdown(event)">▾</button>
-                        </div>
-                        <div id="nsbDCDropdown" class="nsb-dc-dropdown hidden" onclick="event.stopPropagation()">
-                            <div class="nsb-dc-dropdown-header">
-                                <input id="nsbDCSearch" type="text" class="nsb-dc-search" placeholder="搜索三字码 / 城市 / 地区..." oninput="renderNSBDCOptions()">
-                                <div class="nsb-dc-actions">
-                                    <span id="nsbDCSelectedCount">已选 0 个</span>
-                                    <div class="nsb-dc-actions-btns">
-                                        <button type="button" onclick="selectAllFilteredNSBDC()">全选</button>
-                                        <button type="button" onclick="clearNSBDC()">清空</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="nsbDCList" class="nsb-dc-list"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="option-item">
                     <span class="label" title="表格列数精简或完整">🧾 精简表格</span>
                     <select id="nsbCompactView" onchange="setNSBCompactView(this.value === 'compact')">
                         <option value="compact" selected>精简表格</option>
@@ -2085,7 +2366,7 @@
                         <option value="off">关闭</option>
                     </select>
                 </div>
-                <div class="option-item">
+                <div class="option-item full-width">
                     <span class="label" title="CSV 导出文件名">🛠️ 输出文件名</span>
                     <input id="nsbOutFile" type="text" value="ip.csv" placeholder="ip.csv">
                 </div>
@@ -2654,6 +2935,22 @@
         let allLocations = [];
         let locationByIata = {};
         let extractedFileDCs = [];
+        let extractedFilePorts = [];
+        const COMMON_CF_PORTS = [
+            { port: '443', label: 'HTTPS 默认' },
+            { port: '2053', label: 'HTTPS' },
+            { port: '2083', label: 'HTTPS' },
+            { port: '2087', label: 'HTTPS' },
+            { port: '2096', label: 'HTTPS' },
+            { port: '8443', label: 'HTTPS' },
+            { port: '80', label: 'HTTP 默认' },
+            { port: '8080', label: 'HTTP' },
+            { port: '8880', label: 'HTTP' },
+            { port: '2052', label: 'HTTP' },
+            { port: '2082', label: 'HTTP' },
+            { port: '2086', label: 'HTTP' },
+            { port: '2095', label: 'HTTP' },
+        ];
         let nsbHeaders = [];
         let nsbRows = [];
         let nsbLiveRows = [];
@@ -2751,9 +3048,13 @@
             uploadedFileName = uploadedFiles.map(f => f.name).join(', ');
             uploadedFileContent = uploadedFiles.length === 1 ? uploadedFiles[0].content : '';
             extractDCsFromFiles(uploadedFiles);
+            extractPortsFromFiles(uploadedFiles);
             renderNSBFileList();
             if (!document.getElementById('nsbDCDropdown')?.classList.contains('hidden')) {
                 renderNSBDCOptions();
+            }
+            if (!document.getElementById('nsbPortDropdown')?.classList.contains('hidden')) {
+                renderNSBPortOptions();
             }
         }
 
@@ -2975,6 +3276,8 @@
 
         function toggleNSBDCDropdown(event) {
             if (event) event.stopPropagation();
+            const portDropdown = document.getElementById('nsbPortDropdown');
+            if (portDropdown) portDropdown.classList.add('hidden');
             const dropdown = document.getElementById('nsbDCDropdown');
             if (!dropdown) return;
             const opening = dropdown.classList.contains('hidden');
@@ -3088,6 +3391,229 @@
             listEl.innerHTML = html;
         }
 
+        function extractPortsFromFiles(files) {
+            const counts = new Map();
+            const addPort = (rawPort) => {
+                const n = parseInt(String(rawPort || '').trim(), 10);
+                if (!Number.isInteger(n) || n < 1 || n > 65535) return;
+                const key = String(n);
+                counts.set(key, (counts.get(key) || 0) + 1);
+            };
+            const hostHeaderNames = new Set(['ip', 'ip地址', 'host', 'hostname', 'domain', 'address', 'addr', 'server', 'endpoint', 'target', '目标', '地址', '域名', '主机', '服务器', '节点']);
+            const portHeaderNames = new Set(['port', '端口', '端口号', 'serverport', 'targetport']);
+
+            (files || []).forEach(file => {
+                const text = String(file && file.content || '');
+                if (!text.trim()) return;
+                const lines = text.split(/\r?\n/);
+                let csvHostCol = -1;
+                let csvPortCol = -1;
+                let checkedHeader = false;
+
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+                    if (!checkedHeader && line.includes(',')) {
+                        checkedHeader = true;
+                        const cols = parseCSVLineSimple(line.replace(/^\uFEFF/, ''));
+                        for (let c = 0; c < cols.length; c++) {
+                            const norm = cols[c].trim().toLowerCase().replace(/[\s_.\-：:]+/g, '');
+                            if (csvHostCol < 0 && hostHeaderNames.has(norm)) csvHostCol = c;
+                            if (csvPortCol < 0 && portHeaderNames.has(norm)) csvPortCol = c;
+                        }
+                        if (csvHostCol >= 0) continue;
+                    }
+                    if (csvHostCol >= 0 && csvPortCol >= 0 && line.includes(',')) {
+                        const cols = parseCSVLineSimple(line);
+                        if (csvPortCol < cols.length && /^\d{1,5}$/.test(cols[csvPortCol].trim())) {
+                            addPort(cols[csvPortCol]);
+                            continue;
+                        }
+                    }
+                    const seenLine = new Set();
+                    const linePorts = [];
+                    const bracketMatches = line.matchAll(/\[[^\]]+\]:(\d{1,5})(?:\b|$)/g);
+                    for (const m of bracketMatches) linePorts.push(m[1]);
+                    const hostPortMatches = line.matchAll(/(?:^|[\s,;|\/@])(?:[a-zA-Z0-9.-]+):(\d{1,5})(?:\b|\/|$|#)/g);
+                    for (const m of hostPortMatches) linePorts.push(m[1]);
+                    const wsPortMatch = line.match(/^(?:\S+)\s+(\d{1,5})(?:\s|#|$)/);
+                    if (wsPortMatch) linePorts.push(wsPortMatch[1]);
+                    if (line.includes(',')) {
+                        const cols = parseCSVLineSimple(line);
+                        for (const col of cols) {
+                            if (/^\d{1,5}$/.test(col)) {
+                                const n = parseInt(col, 10);
+                                if (n >= 1 && n <= 65535) {
+                                    linePorts.push(String(n));
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    for (const p of linePorts) {
+                        if (!seenLine.has(p)) {
+                            seenLine.add(p);
+                            addPort(p);
+                        }
+                    }
+                }
+            });
+
+            extractedFilePorts = Array.from(counts.entries())
+                .map(([port, count]) => ({ port, count }))
+                .sort((a, b) => (b.count - a.count) || (parseInt(a.port, 10) - parseInt(b.port, 10)));
+        }
+
+        function getSelectedNSBPortList() {
+            const raw = document.getElementById('nsbPortFilter')?.value || '';
+            const parts = raw.split(/[,，;\s]+/).map(s => s.trim()).filter(Boolean);
+            const seen = new Set();
+            const out = [];
+            parts.forEach(p => {
+                const n = parseInt(p, 10);
+                if (Number.isInteger(n) && n >= 1 && n <= 65535 && String(n) === p) {
+                    const key = String(n);
+                    if (!seen.has(key)) {
+                        seen.add(key);
+                        out.push(key);
+                    }
+                }
+            });
+            return out;
+        }
+
+        function setSelectedNSBPortList(list) {
+            const input = document.getElementById('nsbPortFilter');
+            if (!input) return;
+            const seen = new Set();
+            const clean = [];
+            (list || []).forEach(item => {
+                const token = String(item || '').trim();
+                const n = parseInt(token, 10);
+                if (Number.isInteger(n) && n >= 1 && n <= 65535) {
+                    const key = String(n);
+                    if (!seen.has(key)) {
+                        seen.add(key);
+                        clean.push(key);
+                    }
+                }
+            });
+            input.value = clean.join(',');
+            updateNSBPortSelectedCount();
+        }
+
+        function updateNSBPortSelectedCount() {
+            const el = document.getElementById('nsbPortSelectedCount');
+            if (!el) return;
+            el.textContent = `已选 ${getSelectedNSBPortList().length} 个`;
+        }
+
+        function onNSBPortInputChange() {
+            updateNSBPortSelectedCount();
+            if (!document.getElementById('nsbPortDropdown')?.classList.contains('hidden')) {
+                renderNSBPortOptions();
+            }
+        }
+
+        function toggleNSBPortDropdown(event) {
+            if (event) event.stopPropagation();
+            const dcDropdown = document.getElementById('nsbDCDropdown');
+            if (dcDropdown) dcDropdown.classList.add('hidden');
+            const dropdown = document.getElementById('nsbPortDropdown');
+            if (!dropdown) return;
+            const opening = dropdown.classList.contains('hidden');
+            dropdown.classList.toggle('hidden');
+            if (opening) {
+                renderNSBPortOptions();
+                const searchInput = document.getElementById('nsbPortSearch');
+                if (searchInput) setTimeout(() => searchInput.focus(), 0);
+            }
+        }
+
+        function toggleNSBPort(port) {
+            const token = String(port || '').trim();
+            const n = parseInt(token, 10);
+            if (!Number.isInteger(n) || n < 1 || n > 65535) return;
+            const key = String(n);
+            const list = getSelectedNSBPortList();
+            const idx = list.indexOf(key);
+            if (idx >= 0) {
+                list.splice(idx, 1);
+            } else {
+                list.push(key);
+            }
+            setSelectedNSBPortList(list);
+            renderNSBPortOptions();
+        }
+
+        function clearNSBPort() {
+            setSelectedNSBPortList([]);
+            renderNSBPortOptions();
+        }
+
+        function getFilteredNSBPorts() {
+            const query = (document.getElementById('nsbPortSearch')?.value || '').trim().toLowerCase();
+            const commonMap = new Map(COMMON_CF_PORTS.map(item => [item.port, item.label]));
+            const matchPort = (port) => {
+                if (!query) return true;
+                const label = commonMap.get(port) || '';
+                return `${port} ${label}`.toLowerCase().includes(query);
+            };
+            const filePorts = extractedFilePorts.map(d => d.port).filter(matchPort);
+            const fileSet = new Set(filePorts);
+            const commonPorts = COMMON_CF_PORTS.map(d => d.port).filter(p => !fileSet.has(p) && matchPort(p));
+            return { filePorts, commonPorts, query, commonMap };
+        }
+
+        function selectAllFilteredNSBPort() {
+            const { filePorts, commonPorts } = getFilteredNSBPorts();
+            const merged = new Set(getSelectedNSBPortList());
+            if (filePorts.length > 0 && !(document.getElementById('nsbPortSearch')?.value || '').trim()) {
+                filePorts.forEach(p => merged.add(p));
+            } else {
+                filePorts.forEach(p => merged.add(p));
+                commonPorts.forEach(p => merged.add(p));
+            }
+            setSelectedNSBPortList(Array.from(merged));
+            renderNSBPortOptions();
+        }
+
+        function renderNSBPortOptions() {
+            const listEl = document.getElementById('nsbPortList');
+            if (!listEl) return;
+            updateNSBPortSelectedCount();
+            const selectedSet = new Set(getSelectedNSBPortList());
+            const fileCountMap = new Map(extractedFilePorts.map(d => [d.port, d.count]));
+            const { filePorts, commonPorts, query, commonMap } = getFilteredNSBPorts();
+
+            const renderItem = (port) => {
+                const checked = selectedSet.has(port) ? 'checked' : '';
+                const desc = escapeHTML(commonMap.get(port) || '自定义端口');
+                const count = fileCountMap.get(port);
+                const badge = count ? `<span class="nsb-dc-count">${count}条</span>` : '';
+                return `<label class="nsb-dc-option" onclick="event.preventDefault();toggleNSBPort('${escapeHTML(port)}')"><input type="checkbox" ${checked} tabindex="-1"><span class="nsb-dc-code">${escapeHTML(port)}</span><span class="nsb-dc-name">${desc}</span>${badge}</label>`;
+            };
+
+            let html = '';
+            if (filePorts.length > 0) {
+                html += `<div class="nsb-dc-group-title">📄 上传文件中的端口 (${filePorts.length})</div>`;
+                html += filePorts.map(renderItem).join('');
+            }
+            if (commonPorts.length > 0) {
+                html += `<div class="nsb-dc-group-title">🌐 Cloudflare 常用端口 (${commonPorts.length})</div>`;
+                html += commonPorts.map(renderItem).join('');
+            }
+            if (!html) {
+                const n = parseInt(query, 10);
+                if (/^\d{1,5}$/.test(query) && n >= 1 && n <= 65535) {
+                    html = `<div class="nsb-dc-empty">未在列表中找到端口 "${escapeHTML(String(n))}"<br><button type="button" class="nsb-file-action" style="margin-top:8px;" onclick="toggleNSBPort('${escapeHTML(String(n))}')">+ 添加自定义端口 ${escapeHTML(String(n))}</button></div>`;
+                } else {
+                    html = `<div class="nsb-dc-empty">无匹配端口；可输入 1-65535 端口号添加</div>`;
+                }
+            }
+            listEl.innerHTML = html;
+        }
+
         function applyTheme(theme) {
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             let androidDark = false;
@@ -3166,6 +3692,11 @@
             const dcDropdown = document.getElementById('nsbDCDropdown');
             if (dcPicker && dcDropdown && !dcPicker.contains(event.target)) {
                 dcDropdown.classList.add('hidden');
+            }
+            const portPicker = document.getElementById('nsbPortPicker');
+            const portDropdown = document.getElementById('nsbPortDropdown');
+            if (portPicker && portDropdown && !portPicker.contains(event.target)) {
+                portDropdown.classList.add('hidden');
             }
         });
 
@@ -3384,6 +3915,7 @@
                     delay: val('nsbDelay'),
                     resultLimit: val('nsbResultLimit'),
                     fallbackPort: val('nsbFallbackPort'),
+                    portFilter: val('nsbPortFilter'),
                     speedMin: val('nsbSpeedMin'),
                     speedLimit: val('nsbSpeedLimit'),
                     speedLimitMode: selVal('nsbSpeedLimitMode'),
@@ -3422,6 +3954,7 @@
             setValue('nsbDelay', n.delay);
             setValue('nsbResultLimit', n.resultLimit);
             setValue('nsbFallbackPort', n.fallbackPort);
+            setValue('nsbPortFilter', n.portFilter);
             setValue('nsbSpeedMin', n.speedMin);
             setValue('nsbSpeedLimit', n.speedLimit);
             if (n.speedLimitMode) setValue('nsbSpeedLimitMode', n.speedLimitMode);
@@ -3505,6 +4038,7 @@
             result.nsb.speedUrl = pick(c, ['nsburl']);
             result.nsb.resultLimit = pick(c, ['nsbresultlimit', 'resultlimit']);
             result.nsb.fallbackPort = pick(c, ['nsbfallbackport']);
+            result.nsb.portFilter = pick(c, ['nsbportfilter', 'portfilter']);
             result.nsb.speedTest = pick(c, ['nsbspeedtest', 'speedtest']);
             const tls = pick(c, ['nsbtls', 'tls']);
             if (tls !== undefined) result.nsb.tls = tls === true || String(tls).toLowerCase() === 'true' || String(tls) === '1' ? 'on' : 'off';
@@ -4003,7 +4537,7 @@
             progressBar.style.width = `${Math.round(p)}%`;
             const displayCurrent = p >= 100 ? total : (current || 0);
             progressBar.textContent = `${text || ''} ${displayCurrent}/${total} (${Math.round(p)}%)`;
-            progressBar.style.animation = p >= 100 ? 'none' : 'stripe 1s linear infinite';
+            progressBar.style.animation = 'none';
         }
 
         function completeProgressWithCurrentCount(text = '完成') {
@@ -4025,7 +4559,7 @@
             const p = Math.min(Math.max((safeCurrent / safeTotal) * 100, 0), 100);
             progressBar.style.width = `${Math.round(p)}%`;
             progressBar.textContent = `测速中 ${safeCurrent}/${safeTotal} (${Math.round(p)}%)`;
-            progressBar.style.animation = p >= 100 ? 'none' : 'stripe 1s linear infinite';
+            progressBar.style.animation = 'none';
         }
 
         function showStoppingProgress() {
@@ -4038,17 +4572,18 @@
 
         function resetProgress() {
             progressBar.style.width = '0%';
-            progressBar.style.background = 'linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.15) 75%, transparent 75%, transparent), linear-gradient(to right, var(--primary-color), #60a5fa)';
-            progressBar.style.backgroundSize = '20px 20px, 100% 100%';
-            progressBar.style.animation = 'stripe 1s linear infinite';
+            progressBar.style.background = 'var(--md-sys-color-primary)';
+            progressBar.style.backgroundSize = '';
+            progressBar.style.animation = 'none';
             progressBar.textContent = '0%';
         }
 
-        function setStartLoading(text, background = 'linear-gradient(135deg, #ef4444, #dc2626)', boxShadow = '0 4px 12px rgba(239, 68, 68, 0.3), inset 0 1px 1px rgba(255,255,255,.2)') {
+        function setStartLoading(text, background = '', boxShadow = '') {
             const btn = document.getElementById('btnStart');
             const lb = document.getElementById('btnStartLabel');
             const sp = document.getElementById('btnStartSpinner');
             lb.textContent = text;
+            btn.classList.add('is-running');
             btn.style.background = background;
             btn.style.boxShadow = boxShadow;
             if (sp) sp.classList.remove('hidden');
@@ -4223,8 +4758,10 @@
             setValue('officialTargetDC', params.dc);
             setValue('nsbThreads', params.maxThreads);
             setValue('nsbFallbackPort', params.fallbackPort);
+            setValue('nsbPortFilter', params.portFilter);
             setValue('nsbResultLimit', params.resultLimit);
             setValue('nsbSpeedLimit', params.speedLimit);
+            if (params.speedLimitMode) setValue('nsbSpeedLimitMode', params.speedLimitMode);
             setValue('nsbSpeedMin', params.speedMin);
             setValue('nsbSpeedTest', params.speedTest);
             setValue('nsbTargetDC', params.dc);
@@ -4344,8 +4881,9 @@
             if (!btn || !lb) return;
             lb.textContent = text;
             if (sp) sp.classList.add('hidden');
-            btn.style.background = 'linear-gradient(135deg, var(--primary-color), #2563eb)';
-            btn.style.boxShadow = '0 4px 12px rgba(59,130,246,.3), inset 0 1px 1px rgba(255,255,255,0.2)';
+            btn.classList.remove('is-running');
+            btn.style.background = '';
+            btn.style.boxShadow = '';
             btn.disabled = false;
             window.setTimeout(updateBatchSpeedButton, 0);
         }
@@ -5523,6 +6061,7 @@
 
             const maxThreads = parseInt(document.getElementById('nsbThreads').value) || 100;
             const fallbackPort = parseInt(document.getElementById('nsbFallbackPort').value) || 0;
+            const portFilter = (document.getElementById('nsbPortFilter')?.value || '').trim();
             const speedEnabled = String(document.getElementById('nsbEnableSpeed').value || 'off').toLowerCase() === 'on';
             const speedTestInput = parseInt(document.getElementById('nsbSpeedTest').value) || 0;
             const speedURL = resolveSpeedTestUrl('nsbSpeedUrl', 'nsbSpeedUrlPreset');
@@ -5570,7 +6109,7 @@
             if (card) card.classList.remove('active');
             
             updateNSBCompactToggle();
-            setStartLoading(getRunningButtonText(), 'linear-gradient(135deg, var(--error-color), #dc2626)', '0 4px 12px rgba(239, 68, 68, 0.3), inset 0 1px 1px rgba(255,255,255,0.2)');
+            setStartLoading(getRunningButtonText());
             renderScanHeaders('nsb');
             resetProgress();
             progressBox.style.display = 'block';
@@ -5596,6 +6135,7 @@
                     outFile,
                     maxThreads,
                     fallbackPort,
+                    portFilter,
                     speedTest,
                     speedURL,
                     enableTLS,
@@ -7102,7 +7642,7 @@
                     const nsbStatus = msg.data.status || 'complete';
                     const nsbMessage = msg.data.message || '测试完成';
                     updateProgress(nsbRows.length, Math.max(nsbRows.length, 1), nsbStatus === 'failed' ? '任务失败' : '完成');
-                    progressBar.style.background = nsbStatus === 'failed' ? 'var(--error-color)' : (nsbStatus === 'partial' ? 'var(--warning-color)' : 'linear-gradient(to right, #10b981, #34d399)');
+                    progressBar.style.background = nsbStatus === 'failed' ? 'var(--md-sys-color-error)' : (nsbStatus === 'partial' ? 'var(--md-sys-color-warning)' : 'var(--md-sys-color-tertiary)');
                     progressBar.style.animation = 'none';
                     if (nsbStatus === 'failed') {
                         progressBar.textContent = '任务失败';
@@ -7231,7 +7771,7 @@
                     finishRunningTask('✨ 开始扫描与测试');
                     finishCompactIPv4('✅');
                     setTimeout(() => finishCompactIPv4('🧹'), 3000);
-                    progressBar.style.background = 'linear-gradient(to right, #10b981, #34d399)';
+                    progressBar.style.background = 'var(--md-sys-color-tertiary)';
                     progressBar.style.width = '100%';
                     progressBar.style.animation = 'none';
                     progressBar.textContent = `精简完成：保留 ${msg.data.count} 个子网`;
@@ -7277,7 +7817,7 @@
             if (!el) return;
             const version = data.version || 'dev';
             const latest = data.latest || '';
-            const releaseURL = data.releaseURL || 'https://github.com/PoemMisty/CFData-WEB/releases/latest';
+            const releaseURL = data.releaseURL || 'https://github.com/121909/CFData-WEB/releases/latest';
             let html = escapeHTML(version);
             if (data.hasUpdate && latest) {
                 html += ` <a href="${releaseURL}" target="_blank" rel="noopener noreferrer">发现新版本 ${escapeHTML(latest)}</a>`;

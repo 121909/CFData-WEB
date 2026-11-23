@@ -275,11 +275,15 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 					return
 				}
 			}
+			if _, err := parsePortFilterSet(params.PortFilter); err != nil {
+				session.sendWSMessage("error", err.Error())
+				return
+			}
 			scanMode := params.ScanMode
 			if scanMode == "" {
 				scanMode = scanModeTCPing
 			}
-			session.startTaskNamed("非标优选", "nsb", map[string]interface{}{"fileName": params.FileName, "sourceURL": params.SourceURL, "outFile": params.OutFile, "maxThreads": params.MaxThreads, "fallbackPort": params.FallbackPort, "speedTest": params.SpeedTest, "speedURL": params.SpeedURL, "enableTLS": params.EnableTLS, "delay": params.Delay, "resultLimit": params.ResultLimit, "dc": params.DC, "speedMin": params.SpeedMin, "speedLimit": params.SpeedLimit, "speedLimitMode": params.SpeedLimitMode, "compact": params.Compact, "scanMode": scanMode}, func(ctx context.Context, session *appSession) {
+			session.startTaskNamed("非标优选", "nsb", map[string]interface{}{"fileName": params.FileName, "sourceURL": params.SourceURL, "outFile": params.OutFile, "maxThreads": params.MaxThreads, "fallbackPort": params.FallbackPort, "portFilter": params.PortFilter, "speedTest": params.SpeedTest, "speedURL": params.SpeedURL, "enableTLS": params.EnableTLS, "delay": params.Delay, "resultLimit": params.ResultLimit, "dc": params.DC, "speedMin": params.SpeedMin, "speedLimit": params.SpeedLimit, "speedLimitMode": params.SpeedLimitMode, "compact": params.Compact, "scanMode": scanMode}, func(ctx context.Context, session *appSession) {
 				fileName := params.FileName
 				files := params.Files
 				if hasSourceURL {
@@ -297,7 +301,7 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 				} else if !hasFiles {
 					files = []nsbUploadedFile{{Name: fileName, Content: params.FileContent}}
 				}
-				runNSBTaskWithFiles(ctx, session, fileName, files, params.OutFile, params.MaxThreads, params.FallbackPort, params.SpeedTest, params.SpeedURL, params.EnableTLS, params.Delay, params.ResultLimit, params.DC, params.SpeedMin, params.SpeedLimit, params.SpeedLimitMode, params.Compact, scanMode, params.RelinkHost)
+				runNSBTaskWithFiles(ctx, session, fileName, files, params.OutFile, params.MaxThreads, params.FallbackPort, params.PortFilter, params.SpeedTest, params.SpeedURL, params.EnableTLS, params.Delay, params.ResultLimit, params.DC, params.SpeedMin, params.SpeedLimit, params.SpeedLimitMode, params.Compact, scanMode, params.RelinkHost)
 			})
 		},
 		"start_nsb_reallink": func(data json.RawMessage) {
